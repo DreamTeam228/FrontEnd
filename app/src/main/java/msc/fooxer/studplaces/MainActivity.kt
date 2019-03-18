@@ -7,23 +7,27 @@ import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.text.Layout
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.LinearLayout
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import java.util.ArrayList
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
-    private var elements: MutableList<DataModel> = ArrayList<DataModel>()
+    var elements: MutableList<DataModel> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
+        elements.add(DataModel(R.drawable.samurai, "HELLO FUCKING APP"))
         for (i in 0..3) {
             elements.add(DataModel(R.drawable.samurai, i.toString()))
         }
@@ -31,6 +35,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val recyclerView = findViewById <RecyclerView> (R.id.list)
         val adapter = CustomAdapter(this, elements)
         recyclerView.adapter = adapter
+        recyclerView.layoutManager = LinearLayoutManager(this)
 
         val toggle = ActionBarDrawerToggle(
             this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close
@@ -86,6 +91,5 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     fun toInformation (view: View) {
         val info = Intent (this, Information::class.java)
         startActivity(info)
-
     }
 }
