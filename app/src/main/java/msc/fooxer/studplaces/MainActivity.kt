@@ -7,20 +7,30 @@ import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.RecyclerView
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
+import java.util.ArrayList
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+
+    private var elements: MutableList<DataModel> = ArrayList<DataModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
+        for (i in 0..3) {
+            elements.add(DataModel(R.drawable.samurai, i.toString()))
+        }
 
+        val recyclerView = findViewById <RecyclerView> (R.id.list)
+        val adapter = CustomAdapter(this, elements)
+        recyclerView.adapter = adapter
 
         val toggle = ActionBarDrawerToggle(
             this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close
@@ -58,13 +68,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         // Handle navigation view item clicks here.
         when (item.itemId) {
-            R.id.nav_camera -> {
+            R.id.Favorite -> {
                 // Handle the camera action
             }
-            R.id.nav_gallery -> {
+            R.id.Random -> {
 
             }
-            R.id.nav_slideshow -> {
+            R.id.Random_week -> {
 
             }
         }
