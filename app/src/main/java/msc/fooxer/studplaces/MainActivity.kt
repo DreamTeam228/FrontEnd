@@ -91,9 +91,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     fun toInformation (view: View) {
         val info = Intent (this, Information::class.java)
-        //intent.putExtra("NAME", elements[1].text);
+        info.putExtra(Information.NAME, elements[1].text)
         startActivity(info)
-        finish()
-
     }
 }
