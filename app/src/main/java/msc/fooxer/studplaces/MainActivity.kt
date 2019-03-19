@@ -14,6 +14,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.LinearLayout
+import android.widget.TextView
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import java.util.ArrayList
@@ -90,6 +91,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     fun toInformation (view: View) {
         val info = Intent (this, Information::class.java)
+        //intent.putExtra("NAME", elements[1].text);
         startActivity(info)
+        finish()
+
     }
 }
