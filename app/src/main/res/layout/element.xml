@@ -6,7 +6,7 @@
 
     <ImageView
             android:layout_width="wrap_content"
-            android:layout_height="427dp" app:srcCompat="@drawable/samurai" android:id="@+id/photo"
+            android:layout_height="222dp" app:srcCompat="@drawable/samurai" android:id="@+id/photo"
             android:layout_weight="1"
             android:onClick="toInformation"/>
     <TextView
