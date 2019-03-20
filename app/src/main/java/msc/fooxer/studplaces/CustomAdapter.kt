@@ -4,12 +4,13 @@ import android.content.Context
 import android.content.Intent
 import android.support.v4.content.ContextCompat.startActivity
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.ImageView
-import java.util.*
+
 
 class CustomAdapter internal constructor(context: Context, private val elements: List<DataModel>) :
     RecyclerView.Adapter<CustomAdapter.ViewHolder>() {
@@ -26,13 +27,16 @@ class CustomAdapter internal constructor(context: Context, private val elements:
     }
 
     override fun onBindViewHolder(viewHolder: ViewHolder, i: Int) {
+        Log.d("VIEWHOLDER_POSITION", "POSITION IS $i")
         val element = elements[i]
         viewHolder.imageView.setImageResource(element.image)
         viewHolder.textView.text = element.text
 
         viewHolder.imageView.setOnClickListener(View.OnClickListener {
             val info = Intent (it.context, Information::class.java)
-            info.putExtra(Information.NAME, elements[i].text)
+            info.putExtra("POSITION", i)
+            /*info.putExtra(Information.NAME, elements[i].text)
+            info.putExtra("IS_FAVORITE", elements[i].isFavorite)*/
             startActivity(it.context, info, null)
         })
     }

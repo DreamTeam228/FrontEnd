@@ -1,16 +1,18 @@
 <resources>
-    <string name="app_name">Student Places</string>
+    <string name="app_name">Предложения для студентов</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Android Studio</string>
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
-    <string name="action_settings">Settings</string>
-    <string name="title_activity_information">Information</string>
-    <string name="description">Description</string>
+    <string name="action_settings">Настройки</string>
+    <string name="title_activity_information">Информация</string>
+    <string name="description">Описание</string>
     <string name="favorite">Избранное</string>
     <string name="random">Случайное событие</string>
     <string name="random_week">Распланируй неделю</string>
+    <string name="added_to_favorite">Добавлено в Избранное</string>
+    <string name="removed_from_favorite">Удалено из Избранного</string>
 
     <string-array name="titles">
         <item>Зоопарк</item>
