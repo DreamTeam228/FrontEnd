@@ -51,8 +51,8 @@ class Information : AppCompatActivity() {
     }
     fun takeFromIntent () {
         //val inf : String = intent.getStringExtra(NAME)
-        name.text = MainActivity.ELEMENTS[POSITION].text
         Information.POSITION = intent.getIntExtra("POSITION", 0)
+        name.text = MainActivity.ELEMENTS[POSITION].text
         //Information.IS_FAVORITE = intent.getBooleanExtra("IS_FAVORITE", false)
         Log.d("===ELEMENT_TEXT===", "NAME OF ELEMENT IS ${name.text}")
         Log.d("===ELEMENT_POSITION===", "POSITION OF ELEMENT IS ${Information.POSITION}")
