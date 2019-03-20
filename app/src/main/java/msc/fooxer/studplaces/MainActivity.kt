@@ -21,6 +21,13 @@ import java.util.ArrayList
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
+    companion object Storage {
+        var images : Array<Int> = arrayOf(R.drawable.zoo, R.drawable.cinema, R.drawable.yard)
+        // var names : ArrayList <Int>
+        //val names: Array <Int> = R.array.titles
+        val names: Array <String> = arrayOf("Зоопарк", "Кинотеатр \"Люксор\"", "Антикафе \"12 ярдов\"")
+    }
+
     var elements: MutableList<DataModel> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,13 +35,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
-        elements.add(DataModel(R.drawable.samurai, "HELLO FUCKING APP"))
-        for (i in 0..3) {
-            elements.add(DataModel(R.drawable.samurai, i.toString()))
+        //elements.add(DataModel(R.drawable.samurai, "HELLO FUCKING APP"))
+        for (i in 0..2) {
+            elements.add(DataModel(images[i], names[i]))
         }
 
         val recyclerView = findViewById <RecyclerView> (R.id.list)
-        val adapter = CustomAdapter(this, elements)
+        val adapter: CustomAdapter = CustomAdapter(this, elements)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
 
@@ -87,11 +94,5 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         drawer_layout.closeDrawer(GravityCompat.START)
         return true
-    }
-
-    fun toInformation (view: View) {
-        val info = Intent (this, Information::class.java)
-        info.putExtra(Information.NAME, elements[1].text)
-        startActivity(info)
     }
 }

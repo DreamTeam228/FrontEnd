@@ -19,14 +19,10 @@ class Information : AppCompatActivity() {
         setSupportActionBar(toolbar)
         takeFromIntent()
 
-        /*val name = findViewById<TextView>(R.id.name)
-        val arguments = intent.extras
-        name.text = arguments!!.get("NAME")!!.toString()*/
-
         fab.setOnClickListener { view ->
             Snackbar.make(view, "Added to Favorites", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show()
-            //fab.setCompatElevationResource(R.drawable.delfav)
+            fab.setImageResource(R.drawable.delfav)
         }
     }
     fun takeFromIntent () {

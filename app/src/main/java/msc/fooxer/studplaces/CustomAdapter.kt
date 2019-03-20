@@ -30,12 +30,11 @@ class CustomAdapter internal constructor(context: Context, private val elements:
         viewHolder.imageView.setImageResource(element.image)
         viewHolder.textView.text = element.text
 
-        /*viewHolder.imageView.setOnClickListener(View.OnClickListener {
-            viewHolder.textView.text = "Pressed"
-
-            /*val textView = viewHolder.textView.findViewById<TextView>(R.id.name)
-            textView.text = element.text + "dffd"*/
-        })*/
+        viewHolder.imageView.setOnClickListener(View.OnClickListener {
+            val info = Intent (it.context, Information::class.java)
+            info.putExtra(Information.NAME, elements[i].text)
+            startActivity(it.context, info, null)
+        })
     }
 
     override fun getItemCount(): Int {
