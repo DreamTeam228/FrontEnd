@@ -10,6 +10,11 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
         <activity
+                android:name=".Favorites"
+                android:label = "Избранное"
+                android:theme = "@style/AppTheme.NoActionBar">
+        </activity>
+        <activity
                 android:name=".Information"
                 android:label="@string/title_activity_information"
                 android:theme="@style/AppTheme.NoActionBar">
@@ -24,6 +29,7 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+
     </application>
 
 </manifest>

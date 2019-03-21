@@ -1,5 +1,6 @@
 package msc.fooxer.studplaces
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
@@ -25,6 +26,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         // Это глобальный массив объектов, отображающихся на экране
         var ELEMENTS: MutableList<DataModel> = ArrayList()
+        var FAVORITES: MutableList<DataModel> = ArrayList()
+
     }
 
     private fun setElements() {
@@ -83,6 +86,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         // Handle navigation view item clicks here.
         when (item.itemId) {
             R.id.Favorite -> {
+                var fav = Intent (this, Favorites::class.java)
+                startActivity(fav)
+
                 // Handle the camera action
             }
             R.id.Random -> {
