@@ -9,6 +9,8 @@ import android.widget.TextView
 
 import kotlinx.android.synthetic.main.activity_information.*
 import kotlinx.android.synthetic.main.content_information.*
+import msc.fooxer.studplaces.Information.Companion.FROM_FAV
+import msc.fooxer.studplaces.Information.Companion.POSITION
 
 class Information : AppCompatActivity() {
     companion object {
@@ -39,20 +41,49 @@ class Information : AppCompatActivity() {
         }
 
         fab.setOnClickListener { view ->
-            MainActivity.ELEMENTS[POSITION].isFavorite = !MainActivity.ELEMENTS[POSITION].isFavorite
-            Log.d("===FAVORITE_CHANGED===", "FLAG IS CHANGED TO " +
-                    "${MainActivity.ELEMENTS[POSITION].isFavorite}")
+                // проблема в том, что позиции объектов в избранном и в мэин активити не совпадают
+                // поэтому возникает конфликт
+                // в идеале бы сделать это все через указатели, которых в java нет
+            if (FROM_FAV) {
+                var i = MainActivity.ELEMENTS.indexOf(MainActivity.FAVORITES[POSITION])
+                Log.d(
+                   "==POS_IN_ELEM==" ,"POS IN ELEMS IS $i IN FAV $POSITION AND NAME IS ${MainActivity.FAVORITES[POSITION].text}"
+                ) // все работает, но почему-то слетают иконки
+                MainActivity.ELEMENTS[i].isFavorite = !MainActivity.ELEMENTS[i].isFavorite
+                MainActivity.FAVORITES[POSITION].isFavorite = MainActivity.ELEMENTS[i].isFavorite
+                if (MainActivity.ELEMENTS[i].isFavorite) {
+                    Snackbar.make(view, R.string.added_to_favorite, Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show()
+                    fab.setImageResource(R.drawable.delfav)
+                    MainActivity.FAVORITES.add(MainActivity.ELEMENTS[i])
+                } else {
+                    Snackbar.make(view, R.string.removed_from_favorite, Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show()
+                        fab.setImageResource(R.drawable.addfav)
+                        MainActivity.FAVORITES.remove(MainActivity.ELEMENTS[i])
 
-            if (MainActivity.ELEMENTS[POSITION].isFavorite) {
-                Snackbar.make(view, R.string.added_to_favorite, Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
-                fab.setImageResource(R.drawable.delfav)
-            } else {
-                Snackbar.make(view, R.string.removed_from_favorite, Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
-                fab.setImageResource(R.drawable.addfav)
+                }
             }
-        }
+            else {
+                MainActivity.ELEMENTS[POSITION].isFavorite = !MainActivity.ELEMENTS[POSITION].isFavorite
+                Log.d(
+                    "===FAVORITE_CHANGED===", "FLAG IS CHANGED TO " +
+                            "${MainActivity.ELEMENTS[POSITION].isFavorite}"
+                )
+
+                if (MainActivity.ELEMENTS[POSITION].isFavorite) { // ВОТ ТУТ ПРОБЛЕМА!!!
+                    Snackbar.make(view, R.string.added_to_favorite, Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show()
+                    fab.setImageResource(R.drawable.delfav)
+                    MainActivity.FAVORITES.add(MainActivity.ELEMENTS[POSITION])
+                } else {
+                    Snackbar.make(view, R.string.removed_from_favorite, Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show()
+                    fab.setImageResource(R.drawable.addfav)
+                    MainActivity.FAVORITES.remove(MainActivity.ELEMENTS[POSITION])
+                }
+                }
+            }
     }
     fun takeFromIntent () {
         //val inf : String = intent.getStringExtra(NAME)

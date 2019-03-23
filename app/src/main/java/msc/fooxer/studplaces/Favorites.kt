@@ -11,17 +11,17 @@ import msc.fooxer.studplaces.MainActivity.Storage.ELEMENTS
 import msc.fooxer.studplaces.MainActivity.Storage.FAVORITES
 
 class Favorites : AppCompatActivity() {
-    fun setFavorites ()
+   /* fun setFavorites ()
     {
     for (item in ELEMENTS)
         if (item.isFavorite) FAVORITES.add(item)
-    }
+    }*/
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_favorites)
         setSupportActionBar(toolbar)
-        setFavorites()
+        //setFavorites()
         val recyclerView = findViewById <RecyclerView> (R.id.list)
         val adapter: FavAdapter = FavAdapter(this, FAVORITES)
         recyclerView.adapter = adapter
@@ -30,6 +30,6 @@ class Favorites : AppCompatActivity() {
     override fun onBackPressed() {
         super.onBackPressed()
         finish()
-        MainActivity.FAVORITES.clear()
+        //MainActivity.FAVORITES.clear()
     }
 }

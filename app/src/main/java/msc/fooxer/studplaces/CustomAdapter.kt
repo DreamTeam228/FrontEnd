@@ -67,7 +67,6 @@ class FavAdapter (context: Context, private val elements: List<DataModel>) : Cus
         val element = elements[i]
         viewHolder.imageView.setImageResource(element.image)
         viewHolder.textView.text = element.text
-
         viewHolder.imageView.setOnClickListener(View.OnClickListener {
             val info = Intent (it.context, Information::class.java)
             info.putExtra("POSITION", i)

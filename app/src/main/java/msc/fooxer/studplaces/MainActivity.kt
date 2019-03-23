@@ -13,6 +13,8 @@ import android.view.MenuItem
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import java.util.ArrayList
+import kotlin.collections.MutableMap
+
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
@@ -27,6 +29,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         // Это глобальный массив объектов, отображающихся на экране
         var ELEMENTS: MutableList<DataModel> = ArrayList()
         var FAVORITES: MutableList<DataModel> = ArrayList()
+       // var ELEMENTS: MutableMap<Int,DataModel> = mutableMapOf() я думала, мб получится через ключи, но ключи не возвращаются
+        //var FAVORITES: MutableMap<Int,DataModel> = mutableMapOf()
 
     }
 
