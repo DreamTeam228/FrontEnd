@@ -1,5 +1,6 @@
 package msc.fooxer.studplaces
 
+import android.app.Application
 import android.content.Context
 import android.content.Intent
 import android.support.v4.content.ContextCompat.startActivity
@@ -12,7 +13,7 @@ import android.widget.TextView
 import android.widget.ImageView
 
 
-class CustomAdapter internal constructor(context: Context, private val elements: List<DataModel>) :
+open class CustomAdapter internal constructor(context: Context, private val elements: List<DataModel>) :
     RecyclerView.Adapter<CustomAdapter.ViewHolder>() {
 
     private val inflater: LayoutInflater
@@ -26,7 +27,7 @@ class CustomAdapter internal constructor(context: Context, private val elements:
         return ViewHolder(view)
     }
 
-    override fun onBindViewHolder(viewHolder: ViewHolder, i: Int) {
+  open override fun onBindViewHolder(viewHolder: ViewHolder, i: Int) {
         Log.d("VIEWHOLDER_POSITION", "POSITION IS $i")
         val element = elements[i]
         viewHolder.imageView.setImageResource(element.image)
@@ -35,6 +36,7 @@ class CustomAdapter internal constructor(context: Context, private val elements:
         viewHolder.imageView.setOnClickListener(View.OnClickListener {
             val info = Intent (it.context, Information::class.java)
             info.putExtra("POSITION", i)
+                info.putExtra("FROM_FAV", false)
             /*info.putExtra(Information.NAME, elements[i].text)
             info.putExtra("IS_FAVORITE", elements[i].isFavorite)*/
             startActivity(it.context, info, null)
@@ -53,5 +55,26 @@ class CustomAdapter internal constructor(context: Context, private val elements:
             imageView = view.findViewById<View>(R.id.photo) as ImageView
             textView = view.findViewById<View>(R.id.description) as TextView
         }
+    }
+}
+
+// реализация второго адаптера для верного отображения информации об объектах из избранного (костыль)
+
+class FavAdapter (context: Context, private val elements: List<DataModel>) : CustomAdapter (context = context, elements = elements) {
+
+        override fun onBindViewHolder(viewHolder: ViewHolder, i: Int) {
+        Log.d("VIEWHOLDER_POSITION", "POSITION IS $i")
+        val element = elements[i]
+        viewHolder.imageView.setImageResource(element.image)
+        viewHolder.textView.text = element.text
+
+        viewHolder.imageView.setOnClickListener(View.OnClickListener {
+            val info = Intent (it.context, Information::class.java)
+            info.putExtra("POSITION", i)
+            info.putExtra("FROM_FAV", true)
+            /*info.putExtra(Information.NAME, elements[i].text)
+            info.putExtra("IS_FAVORITE", elements[i].isFavorite)*/
+            startActivity(it.context, info, null)
+        })
     }
 }

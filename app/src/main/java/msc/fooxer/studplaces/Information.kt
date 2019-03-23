@@ -1,5 +1,6 @@
 package msc.fooxer.studplaces
 
+import android.icu.text.IDNA
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity;
@@ -19,6 +20,10 @@ class Information : AppCompatActivity() {
         // Для полноценной обработки объекта, нам необходим
         // массив объектов и позиция обрабатываемого объекта
         var POSITION = 0
+
+        //пока костыльный способ отображения информации объектов избранного
+        //через intent boolean extra
+        var FROM_FAV = false
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,7 +57,12 @@ class Information : AppCompatActivity() {
     fun takeFromIntent () {
         //val inf : String = intent.getStringExtra(NAME)
         Information.POSITION = intent.getIntExtra("POSITION", 0)
-        name.text = MainActivity.ELEMENTS[POSITION].text
+        // костыльный метод выяснения, откуда запущена активити
+        Information.FROM_FAV = intent.getBooleanExtra("FROM_FAV", false)
+        if (FROM_FAV)
+            name.text = MainActivity.FAVORITES[POSITION].text
+        else
+            name.text = MainActivity.ELEMENTS[POSITION].text
         //Information.IS_FAVORITE = intent.getBooleanExtra("IS_FAVORITE", false)
         Log.d("===ELEMENT_TEXT===", "NAME OF ELEMENT IS ${name.text}")
         Log.d("===ELEMENT_POSITION===", "POSITION OF ELEMENT IS ${Information.POSITION}")
