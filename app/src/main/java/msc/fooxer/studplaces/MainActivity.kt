@@ -29,7 +29,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         // Это глобальный массив объектов, отображающихся на экране
         var ELEMENTS: MutableList<DataModel> = ArrayList()
         var FAVORITES: MutableList<DataModel> = ArrayList()
-       // var ELEMENTS: MutableMap<Int,DataModel> = mutableMapOf() я думала, мб получится через ключи, но ключи не возвращаются
+        //я думала, мб получится через ключи, но ключи не возвращаются
+        //var ELEMENTS: MutableMap<Int,DataModel> = mutableMapOf()
         //var FAVORITES: MutableMap<Int,DataModel> = mutableMapOf()
 
     }

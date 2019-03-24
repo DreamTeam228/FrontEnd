@@ -23,8 +23,8 @@ class Information : AppCompatActivity() {
         // массив объектов и позиция обрабатываемого объекта
         var POSITION = 0
 
-        //пока костыльный способ отображения информации объектов избранного
-        //через intent boolean extra
+        //Пока костыльный способ отображения информации объектов избранного
+        //Выяснение, откуда запущена активити
         var FROM_FAV = false
     }
 
@@ -33,19 +33,27 @@ class Information : AppCompatActivity() {
         setContentView(R.layout.activity_information)
         setSupportActionBar(toolbar)
         takeFromIntent()
+        if (FROM_FAV) { // если запуск из Избранного
+            if (MainActivity.FAVORITES[POSITION].isFavorite) {
+                fab.setImageResource(R.drawable.delfav)
+            } else {
+                fab.setImageResource(R.drawable.addfav)
+            }
+        } else { // Запуск из главного меню
 
-        if (MainActivity.ELEMENTS[POSITION].isFavorite) {
-            fab.setImageResource(R.drawable.delfav)
-        } else {
-            fab.setImageResource(R.drawable.addfav)
+            if (MainActivity.ELEMENTS[POSITION].isFavorite) {
+                fab.setImageResource(R.drawable.delfav)
+            } else {
+                fab.setImageResource(R.drawable.addfav)
+            }
         }
 
         fab.setOnClickListener { view ->
                 // проблема в том, что позиции объектов в избранном и в мэин активити не совпадают
                 // поэтому возникает конфликт
                 // в идеале бы сделать это все через указатели, которых в java нет
-            if (FROM_FAV) {
-                var i = MainActivity.ELEMENTS.indexOf(MainActivity.FAVORITES[POSITION])
+            if (FROM_FAV) { // Заупск из избранного
+                var i = MainActivity.ELEMENTS.indexOf(MainActivity.FAVORITES[POSITION]) // находим позицию выбранного элемента в ELEMENTS, чтобы изменить его флаг
                 Log.d(
                    "==POS_IN_ELEM==" ,"POS IN ELEMS IS $i IN FAV $POSITION AND NAME IS ${MainActivity.FAVORITES[POSITION].text}"
                 ) // все работает, но почему-то слетают иконки
@@ -64,7 +72,7 @@ class Information : AppCompatActivity() {
 
                 }
             }
-            else {
+            else { //запуск из главного меню
                 MainActivity.ELEMENTS[POSITION].isFavorite = !MainActivity.ELEMENTS[POSITION].isFavorite
                 Log.d(
                     "===FAVORITE_CHANGED===", "FLAG IS CHANGED TO " +
@@ -90,7 +98,7 @@ class Information : AppCompatActivity() {
         Information.POSITION = intent.getIntExtra("POSITION", 0)
         // костыльный метод выяснения, откуда запущена активити
         Information.FROM_FAV = intent.getBooleanExtra("FROM_FAV", false)
-        if (FROM_FAV)
+        if (FROM_FAV) // выясняем, откда запущено активити, чтобы верно работать с POSITION
             name.text = MainActivity.FAVORITES[POSITION].text
         else
             name.text = MainActivity.ELEMENTS[POSITION].text

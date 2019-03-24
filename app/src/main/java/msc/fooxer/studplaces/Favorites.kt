@@ -16,6 +16,7 @@ class Favorites : AppCompatActivity() {
     for (item in ELEMENTS)
         if (item.isFavorite) FAVORITES.add(item)
     }*/
+    // заполнение и очистка favorites производится при нажатии на кнопку в Information
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
