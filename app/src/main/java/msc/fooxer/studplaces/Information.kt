@@ -26,6 +26,12 @@ class Information : AppCompatActivity() {
         //Пока костыльный способ отображения информации объектов избранного
         //Выяснение, откуда запущена активити
         var FROM_FAV = false
+
+        //
+        var REMOVE_FLAG = false
+
+        //
+        var ELEMENTS_INDEX = 0
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,23 +59,25 @@ class Information : AppCompatActivity() {
                 // поэтому возникает конфликт
                 // в идеале бы сделать это все через указатели, которых в java нет
             if (FROM_FAV) { // Заупск из избранного
-                var i = MainActivity.ELEMENTS.indexOf(MainActivity.FAVORITES[POSITION]) // находим позицию выбранного элемента в ELEMENTS, чтобы изменить его флаг
-                Log.d(
-                   "==POS_IN_ELEM==" ,"POS IN ELEMS IS $i IN FAV $POSITION AND NAME IS ${MainActivity.FAVORITES[POSITION].text}"
-                ) // все работает, но почему-то слетают иконки
-                MainActivity.ELEMENTS[i].isFavorite = !MainActivity.ELEMENTS[i].isFavorite
-                MainActivity.FAVORITES[POSITION].isFavorite = MainActivity.ELEMENTS[i].isFavorite
-                if (MainActivity.ELEMENTS[i].isFavorite) {
+                REMOVE_FLAG = false
+
+                //Log.d(
+                //   "==POS_IN_ELEM==" ,"POS IN ELEMS IS $ELEMENTS_INDEX IN FAV $POSITION AND NAME IS ${MainActivity.FAVORITES[POSITION].text}"
+                //) // все работает
+                MainActivity.ELEMENTS[ELEMENTS_INDEX].isFavorite = !MainActivity.ELEMENTS[ELEMENTS_INDEX].isFavorite
+                //MainActivity.FAVORITES[POSITION].isFavorite = MainActivity.ELEMENTS[ELEMENTS_INDEX].isFavorite
+                if (MainActivity.ELEMENTS[ELEMENTS_INDEX].isFavorite) {
                     Snackbar.make(view, R.string.added_to_favorite, Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show()
                     fab.setImageResource(R.drawable.delfav)
-                    MainActivity.FAVORITES.add(MainActivity.ELEMENTS[i])
+                    MainActivity.FAVORITES.add(MainActivity.ELEMENTS[ELEMENTS_INDEX])
+                    REMOVE_FLAG = false
                 } else {
                     Snackbar.make(view, R.string.removed_from_favorite, Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show()
                         fab.setImageResource(R.drawable.addfav)
-                        MainActivity.FAVORITES.remove(MainActivity.ELEMENTS[i])
-
+                    MainActivity.FAVORITES.remove(MainActivity.ELEMENTS[ELEMENTS_INDEX])
+                    REMOVE_FLAG = true
                 }
             }
             else { //запуск из главного меню
@@ -79,7 +87,7 @@ class Information : AppCompatActivity() {
                             "${MainActivity.ELEMENTS[POSITION].isFavorite}"
                 )
 
-                if (MainActivity.ELEMENTS[POSITION].isFavorite) { // ВОТ ТУТ ПРОБЛЕМА!!!
+                if (MainActivity.ELEMENTS[POSITION].isFavorite) {
                     Snackbar.make(view, R.string.added_to_favorite, Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show()
                     fab.setImageResource(R.drawable.delfav)
@@ -93,13 +101,16 @@ class Information : AppCompatActivity() {
                 }
             }
     }
+
     fun takeFromIntent () {
         //val inf : String = intent.getStringExtra(NAME)
         Information.POSITION = intent.getIntExtra("POSITION", 0)
         // костыльный метод выяснения, откуда запущена активити
         Information.FROM_FAV = intent.getBooleanExtra("FROM_FAV", false)
-        if (FROM_FAV) // выясняем, откда запущено активити, чтобы верно работать с POSITION
+        if (FROM_FAV) { // выясняем, откда запущено активити, чтобы верно работать с POSITION
             name.text = MainActivity.FAVORITES[POSITION].text
+            ELEMENTS_INDEX = MainActivity.ELEMENTS.indexOf(MainActivity.FAVORITES[POSITION])
+        }               // находим позицию выбранного элемента в ELEMENTS, чтобы изменить его флаг
         else
             name.text = MainActivity.ELEMENTS[POSITION].text
         //Information.IS_FAVORITE = intent.getBooleanExtra("IS_FAVORITE", false)

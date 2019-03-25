@@ -67,7 +67,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         } else {
             super.onBackPressed()
             finish()
-            System.exit(0)
+            ELEMENTS.clear()
+            //System.exit(0)
         }
     }
 
