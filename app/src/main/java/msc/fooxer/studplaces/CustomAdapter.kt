@@ -3,6 +3,7 @@ package msc.fooxer.studplaces
 import android.app.Application
 import android.content.Context
 import android.content.Intent
+import android.provider.Settings.System.getString
 import android.support.v4.content.ContextCompat.startActivity
 import android.support.v7.widget.RecyclerView
 import android.util.Log
@@ -32,6 +33,7 @@ open class CustomAdapter internal constructor(context: Context, private val elem
         val element = elements[i]
         viewHolder.imageView.setImageResource(element.image)
         viewHolder.textView.text = element.text
+        viewHolder.priceView.text = element.price.toString()
 
         viewHolder.imageView.setOnClickListener(View.OnClickListener {
             val info = Intent (it.context, Information::class.java)
@@ -50,10 +52,12 @@ open class CustomAdapter internal constructor(context: Context, private val elem
     inner class ViewHolder internal constructor(view: View) : RecyclerView.ViewHolder(view) {
         internal val imageView: ImageView
         internal val textView: TextView
+        internal val priceView: TextView
 
         init {
             imageView = view.findViewById<View>(R.id.photo) as ImageView
             textView = view.findViewById<View>(R.id.description) as TextView
+            priceView = view.findViewById<View>(R.id.price) as TextView
         }
     }
 }
@@ -67,7 +71,9 @@ class FavAdapter (context: Context, private val elements: List<DataModel>) : Cus
         val element = elements[i]
         viewHolder.imageView.setImageResource(element.image)
         viewHolder.textView.text = element.text
-        viewHolder.imageView.setOnClickListener(View.OnClickListener {
+        viewHolder.priceView.text = element.price.toString()
+
+            viewHolder.imageView.setOnClickListener(View.OnClickListener {
             val info = Intent (it.context, Information::class.java)
             info.putExtra("POSITION", i)
             info.putExtra("FROM_FAV", true)

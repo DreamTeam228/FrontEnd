@@ -8,6 +8,11 @@
             android:layout_height="222dp" app:srcCompat="@drawable/samurai" android:id="@+id/photo"
             android:layout_weight="1" android:layout_width="match_parent"/>
     <TextView
+            android:text="Цена"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:id="@+id/price" android:layout_weight="1"
+            android:textAlignment="center"/>
+    <TextView
             android:text="@string/description"
             android:layout_width="match_parent"
             android:layout_height="71dp" android:id="@+id/description" android:layout_weight="1"
