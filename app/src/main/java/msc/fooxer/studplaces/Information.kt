@@ -109,10 +109,15 @@ class Information : AppCompatActivity() {
         Information.FROM_FAV = intent.getBooleanExtra("FROM_FAV", false)
         if (FROM_FAV) { // выясняем, откда запущено активити, чтобы верно работать с POSITION
             name.text = MainActivity.FAVORITES[POSITION].text
+            price.text = MainActivity.FAVORITES[POSITION].price.toString()
+            description.text = MainActivity.FAVORITES[POSITION].description
             ELEMENTS_INDEX = MainActivity.ELEMENTS.indexOf(MainActivity.FAVORITES[POSITION])
         }               // находим позицию выбранного элемента в ELEMENTS, чтобы изменить его флаг
-        else
+        else {
             name.text = MainActivity.ELEMENTS[POSITION].text
+            price.text = MainActivity.ELEMENTS[POSITION].price.toString()
+            description.text = MainActivity.ELEMENTS[POSITION].description
+        }
         //Information.IS_FAVORITE = intent.getBooleanExtra("IS_FAVORITE", false)
         Log.d("===ELEMENT_TEXT===", "NAME OF ELEMENT IS ${name.text}")
         Log.d("===ELEMENT_POSITION===", "POSITION OF ELEMENT IS ${Information.POSITION}")

@@ -26,7 +26,6 @@ class Favorites : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
     }
 
-    // НЕ РАБОТАЕТ ОБНОВЛЕНИЕ АКТИВИТИ, ПОСЛЕ ВЫХОДА ИЗ ФАВ (9((
     override fun onResume() {
         super.onResume()
         if (Information.REMOVE_FLAG) {

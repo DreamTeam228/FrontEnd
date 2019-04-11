@@ -14,7 +14,7 @@ import android.widget.TextView
 import android.widget.ImageView
 
 
-open class CustomAdapter internal constructor(context: Context, private val elements: List<DataModel>) :
+open class CustomAdapter internal constructor(context: Context, private val elements: List<DataElement>) :
     RecyclerView.Adapter<CustomAdapter.ViewHolder>() {
 
     private val inflater: LayoutInflater
@@ -64,7 +64,7 @@ open class CustomAdapter internal constructor(context: Context, private val elem
 
 // реализация второго адаптера для верного отображения информации об объектах из избранного (костыль)
 
-class FavAdapter (context: Context, private val elements: List<DataModel>) : CustomAdapter (context = context, elements = elements) {
+class FavAdapter (context: Context, private val elements: List<DataElement>) : CustomAdapter (context = context, elements = elements) {
 
         override fun onBindViewHolder(viewHolder: ViewHolder, i: Int) {
         Log.d("VIEWHOLDER_POSITION", "POSITION IS $i")

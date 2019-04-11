@@ -22,13 +22,16 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         // Здесь начинается эмулятор базы данных
         var IMAGES : Array<Int> = arrayOf(R.drawable.zoo, R.drawable.cinema, R.drawable.yard)
         val NAMES: Array <String> = arrayOf("Зоопарк", "Кинотеатр \"Люксор\"", "Антикафе \"12 ярдов\"")
+        val DESCRIPTIONS: Array <String> = arrayOf("Зоопарк - описание", "Кинотеатр \"Люксор\" - описание",
+            "Антикафе \"12 ярдов\" - описание")
         var IS_FAVORITES : Array<Boolean> = arrayOf(false, false, false)
         val PRICES: Array <Int> = arrayOf(150, 2000, 124000)
         // Здесь заканчивается эмулятор базы данных
 
         // Это глобальный массив объектов, отображающихся на экране
-        var ELEMENTS: MutableList<DataModel> = ArrayList()
-        var FAVORITES: MutableList<DataModel> = ArrayList()
+        var ELEMENTS: MutableList<DataElement> = ArrayList()
+        var FAVORITES: MutableList<DataElement> = ArrayList()
+        var RANDOM_WEEK: MutableList<DataElement> = ArrayList()
         //я думала, мб получится через ключи, но ключи не возвращаются
         //var ELEMENTS: MutableMap<Int,DataModel> = mutableMapOf()
         //var FAVORITES: MutableMap<Int,DataModel> = mutableMapOf()
@@ -37,7 +40,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     private fun setElements() {
         for (i in 0 until NAMES.size) {
-            ELEMENTS.add(DataModel(IMAGES[i], NAMES[i], PRICES[i], IS_FAVORITES[i]))
+            ELEMENTS.add(DataElement(IMAGES[i], NAMES[i], DESCRIPTIONS[i], PRICES[i], IS_FAVORITES[i]))
         }
     }
 
@@ -83,9 +86,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         when (item.itemId) {
-            R.id.action_settings -> return true
+            R.id.app_bar_search -> return true
             else -> return super.onOptionsItemSelected(item)
         }
+
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
@@ -94,14 +98,16 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             R.id.Favorite -> {
                 var fav = Intent (this, Favorites::class.java)
                 startActivity(fav)
-
-                // Handle the camera action
             }
             R.id.Random -> {
-
+                var rand = Intent (this, Search::class.java)
+                // заполнить одним элементом
+                startActivity(rand)
             }
             R.id.Random_week -> {
-
+                var rand = Intent (this, Random::class.java)
+                // заполнить массивом
+                startActivity(rand)
             }
         }
 

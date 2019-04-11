@@ -13,7 +13,8 @@
     <string name="random_week">Распланируй неделю</string>
     <string name="added_to_favorite">Добавлено в Избранное</string>
     <string name="removed_from_favorite">Удалено из Избранного</string>
-    <string name="rubles"> рублей</string>
+    <string name="rubles">рублей</string>
+    <string name="search">Поиск</string>
 
     <string-array name="titles">
         <item>Зоопарк</item>
