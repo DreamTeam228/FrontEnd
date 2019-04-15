@@ -14,10 +14,6 @@ import msc.fooxer.studplaces.Information.Companion.POSITION
 
 class Information : AppCompatActivity() {
     companion object {
-        /*const val NAME = "Place"
-        const val PRICE = "150"
-        const val IMG = R.drawable.samurai
-        var IS_FAVORITE = false*/
 
         // Для полноценной обработки объекта, нам необходим
         // массив объектов и позиция обрабатываемого объекта
@@ -26,6 +22,7 @@ class Information : AppCompatActivity() {
         //Пока костыльный способ отображения информации объектов избранного
         //Выяснение, откуда запущена активити
         var FROM_FAV = false
+        var FROM_WHERE = "NAME"
 
         //
         var REMOVE_FLAG = false
@@ -39,20 +36,7 @@ class Information : AppCompatActivity() {
         setContentView(R.layout.activity_information)
         setSupportActionBar(toolbar)
         takeFromIntent()
-        if (FROM_FAV) { // если запуск из Избранного
-            if (MainActivity.FAVORITES[POSITION].isFavorite) {
-                fab.setImageResource(R.drawable.delfav)
-            } else {
-                fab.setImageResource(R.drawable.addfav)
-            }
-        } else { // Запуск из главного меню
 
-            if (MainActivity.ELEMENTS[POSITION].isFavorite) {
-                fab.setImageResource(R.drawable.delfav)
-            } else {
-                fab.setImageResource(R.drawable.addfav)
-            }
-        }
 
         fab.setOnClickListener { view ->
                 // проблема в том, что позиции объектов в избранном и в мэин активити не совпадают
@@ -103,31 +87,51 @@ class Information : AppCompatActivity() {
     }
 
     fun takeFromIntent () {
-        //val inf : String = intent.getStringExtra(NAME)
+
         Information.POSITION = intent.getIntExtra("POSITION", 0)
-        // костыльный метод выяснения, откуда запущена активити
-        Information.FROM_FAV = intent.getBooleanExtra("FROM_FAV", false)
-        if (FROM_FAV) { // выясняем, откда запущено активити, чтобы верно работать с POSITION
-            name.text = MainActivity.FAVORITES[POSITION].text
-            price.text = MainActivity.FAVORITES[POSITION].price.toString()
-            description.text = MainActivity.FAVORITES[POSITION].description
-            ELEMENTS_INDEX = MainActivity.ELEMENTS.indexOf(MainActivity.FAVORITES[POSITION])
-        }               // находим позицию выбранного элемента в ELEMENTS, чтобы изменить его флаг
-        else {
-            name.text = MainActivity.ELEMENTS[POSITION].text
-            price.text = MainActivity.ELEMENTS[POSITION].price.toString()
-            description.text = MainActivity.ELEMENTS[POSITION].description
+        //метод выяснения, откуда запущена активити
+        when (FROM_WHERE) {
+            "MAIN" -> {
+                FROM_FAV = false
+                name.text = MainActivity.ELEMENTS[POSITION].text
+                price.text = MainActivity.ELEMENTS[POSITION].price.toString()
+                description.text = MainActivity.ELEMENTS[POSITION].description
+                if (MainActivity.ELEMENTS[POSITION].isFavorite) {
+                    fab.setImageResource(R.drawable.delfav)
+                } else {
+                    fab.setImageResource(R.drawable.addfav)
+                }
+            }
+            "FAVORITE" -> {
+                FROM_FAV = true
+                name.text = MainActivity.FAVORITES[POSITION].text
+                price.text = MainActivity.FAVORITES[POSITION].price.toString()
+                description.text = MainActivity.FAVORITES[POSITION].description
+                ELEMENTS_INDEX = MainActivity.ELEMENTS.indexOf(MainActivity.FAVORITES[POSITION])
+                if (MainActivity.FAVORITES[POSITION].isFavorite) {
+                    fab.setImageResource(R.drawable.delfav)
+                } else {
+                    fab.setImageResource(R.drawable.addfav)
+                }
+            }
+            "RANDOM" -> {
+                FROM_FAV = true
+                name.text = MainActivity.RANDOM_WEEK[POSITION].text
+                description.text = MainActivity.RANDOM_WEEK[POSITION].description
+                price.text = MainActivity.RANDOM_WEEK[POSITION].price.toString()
+                ELEMENTS_INDEX = MainActivity.ELEMENTS.indexOf(MainActivity.RANDOM_WEEK[POSITION])
+                if (MainActivity.RANDOM_WEEK[POSITION].isFavorite) {
+                    fab.setImageResource(R.drawable.delfav)
+                } else {
+                    fab.setImageResource(R.drawable.addfav)
+                }
+                            }
         }
-        //Information.IS_FAVORITE = intent.getBooleanExtra("IS_FAVORITE", false)
+
         Log.d("===ELEMENT_TEXT===", "NAME OF ELEMENT IS ${name.text}")
         Log.d("===ELEMENT_POSITION===", "POSITION OF ELEMENT IS ${Information.POSITION}")
         Log.d("===ELEMENT_FAVORITE===", "FLAG OF ELEMENT IS ${MainActivity.ELEMENTS[POSITION].isFavorite}")
     }
 
-    /*override fun onDestroy() {
-        super.onDestroy()
-        MainActivity.ELEMENTS[Information.POSITION.toInt()].isFavorite  = Information.IS_FAVORITE
-        Log.d("===ELEMENT_FAVORITE===", "(ON_DESTROY) FLAG OF ELEMENT IS " +
-                "${MainActivity.ELEMENTS[Information.POSITION.toInt()].isFavorite}")
-    }*/
+
 }

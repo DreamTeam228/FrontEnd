@@ -20,7 +20,7 @@ class Favorites : AppCompatActivity() {
         setContentView(R.layout.activity_favorites)
         setSupportActionBar(toolbar)
         val recyclerView = findViewById <RecyclerView> (R.id.list)
-        val adapter: FavAdapter = FavAdapter(this, FAVORITES)
+        val adapter: CustomAdapter = CustomAdapter(this, FAVORITES)
         //adapter.notifyDataSetChanged()        //true, если данные изменились
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
@@ -30,7 +30,7 @@ class Favorites : AppCompatActivity() {
         super.onResume()
         if (Information.REMOVE_FLAG) {
             finish()
-            startActivity(Intent(this, this.javaClass))
+            startActivity(Intent( this, this.javaClass))
             Information.REMOVE_FLAG = !Information.REMOVE_FLAG
         }
     }

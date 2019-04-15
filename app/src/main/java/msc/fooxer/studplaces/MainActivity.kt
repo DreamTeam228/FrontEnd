@@ -12,6 +12,7 @@ import android.view.Menu
 import android.view.MenuItem
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
+import kotlinx.android.synthetic.main.content_main.*
 import java.util.ArrayList
 import kotlin.collections.MutableMap
 
@@ -45,7 +46,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        setSupportActionBar(toolbar)
+        //setSupportActionBar(toolbar)
 
         setElements()
         val recyclerView = findViewById <RecyclerView> (R.id.list)
@@ -58,6 +59,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         )
         drawer_layout.addDrawerListener(toggle)
         toggle.syncState()
+
+        search_button.setOnClickListener {
+            val search = Intent(this, Search::class.java)
+            startActivity(search)
+        }
 
         nav_view.setNavigationItemSelectedListener(this)
     }
@@ -94,22 +100,34 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         // Handle navigation view item clicks here.
         when (item.itemId) {
             R.id.Favorite -> {
+                Information.FROM_WHERE = "FAVORITE"
                 var fav = Intent (this, Favorites::class.java)
                 startActivity(fav)
             }
             R.id.Random -> {
-                var rand = Intent (this, Search::class.java)
+                var rand = Intent (this, Information::class.java)
+                val element = Math.random()*10
+                rand.putExtra("POSITION", element.toInt()%ELEMENTS.size)
                 // заполнить одним элементом
                 startActivity(rand)
             }
             R.id.Random_week -> {
+                Information.FROM_WHERE = "RANDOM"
+                for (i in 0..2) {
+                    RANDOM_WEEK.add(ELEMENTS[(Math.random()*10).toInt()% ELEMENTS.size])
+                }
                 var rand = Intent (this, Random::class.java)
                 // заполнить массивом
                 startActivity(rand)
             }
         }
 
+
         drawer_layout.closeDrawer(GravityCompat.START)
         return true
+    }
+    override fun onResume() {
+        super.onResume()
+        Information.FROM_WHERE = "MAIN"
     }
 }
