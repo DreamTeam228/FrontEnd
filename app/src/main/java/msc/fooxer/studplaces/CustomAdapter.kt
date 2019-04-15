@@ -10,8 +10,9 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import android.widget.ImageView
+import android.widget.*
+import kotlinx.android.synthetic.main.checkbox_element.view.*
+import java.util.zip.Inflater
 
 
 open class CustomAdapter internal constructor(context: Context, private val elements: List<DataElement>) :
@@ -81,5 +82,72 @@ class FavAdapter (context: Context, private val elements: List<DataElement>) : C
             info.putExtra("IS_FAVORITE", elements[i].isFavorite)*/
             startActivity(it.context, info, null)
         })
+    }
+}
+
+  /*  class SearchAdapter internal constructor(context: Context, private val elements: Array <SearchOption>)  : BaseAdapter ()
+{
+    private val inflater: LayoutInflater
+    init {
+        this.inflater = LayoutInflater.from(context)
+    }
+
+    override fun getItem(position: Int): Any {
+    return elements[position]
+    }
+
+    override fun getItemId(position: Int): Long {
+    return position.toLong()
+    }
+
+    override fun getCount(): Int {
+    return elements.size
+    }
+
+    override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View? {
+
+
+        var view = inflater.inflate(R.layout.checkbox_element, parent, false)
+        Log.d("VIEW_POSITION", "POSITION IS $position")
+        var element = elements[position]
+        val checkBox = view?.findViewById<View>(R.id.checkBox_search) as CheckBox
+        val imageView = view?.findViewById<View>(R.id.list_icon) as ImageView
+        checkBox.text = element.text
+        imageView.setImageResource(element.image)
+
+        return view   } */
+
+
+class SearchAdapter internal constructor(context: Context, private val elements: Array<SearchOption>) :
+    RecyclerView.Adapter<SearchAdapter.ViewHolder>() {
+    private val inflater: LayoutInflater
+    init {
+        this.inflater = LayoutInflater.from(context)
+    }
+
+    override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): ViewHolder {
+        val view = inflater.inflate(R.layout.checkbox_element, viewGroup, false)
+        return ViewHolder(view)
+    }
+
+    override fun getItemCount(): Int {
+        return elements.size
+    }
+
+    override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
+        Log.d("VIEWHOLDER_POSITION", "POSITION IS $position")
+        val element = elements[position]
+        viewHolder.imageView.setImageResource(element.image)
+        viewHolder.checkBox.text = element.text
+
+    }
+
+    inner class ViewHolder internal constructor(view: View) : RecyclerView.ViewHolder(view) {
+        internal val imageView: ImageView
+        internal val checkBox: CheckBox
+        init {
+            imageView = view.findViewById<View>(R.id.list_icon) as ImageView
+            checkBox = view.findViewById<View>(R.id.checkBox_search) as CheckBox
+        }
     }
 }

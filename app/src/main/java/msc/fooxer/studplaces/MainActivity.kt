@@ -18,7 +18,7 @@ import kotlin.collections.MutableMap
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
-    companion object Storage {
+    companion object Storage { // Массивы Констант (метро, категории) - в файле Constants
         // Здесь начинается эмулятор базы данных
         var IMAGES : Array<Int> = arrayOf(R.drawable.zoo, R.drawable.cinema, R.drawable.yard)
         val NAMES: Array <String> = arrayOf("Зоопарк", "Кинотеатр \"Люксор\"", "Антикафе \"12 ярдов\"")
@@ -32,9 +32,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         var ELEMENTS: MutableList<DataElement> = ArrayList()
         var FAVORITES: MutableList<DataElement> = ArrayList()
         var RANDOM_WEEK: MutableList<DataElement> = ArrayList()
-        //я думала, мб получится через ключи, но ключи не возвращаются
-        //var ELEMENTS: MutableMap<Int,DataModel> = mutableMapOf()
-        //var FAVORITES: MutableMap<Int,DataModel> = mutableMapOf()
+
 
     }
 
