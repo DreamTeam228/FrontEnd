@@ -2,7 +2,7 @@ package msc.fooxer.studplaces
 
 var CATEGORY: Array <SearchOption> = arrayOf(SearchOption("Бары"),
     SearchOption("Антикафе"), SearchOption("Музеи"),
-    SearchOption("Кинотеатры"), SearchOption("Разное"))
+    SearchOption("Кинотеатры"), SearchOption("Разное"), SearchOption("буль"))
 
 var METRO: Array <SearchOption> = arrayOf(SearchOption("Сокольническая линия", R.color.Metro_Line1), SearchOption("Замоскворецкая линия", R.color.Metro_Line2),
     SearchOption("Арбатско-Покровская линия", R.color.Metro_Line3), SearchOption("Филевская линия", R.color.Metro_Line4),SearchOption("Кольцевая линия", R.color.Metro_Line5),
