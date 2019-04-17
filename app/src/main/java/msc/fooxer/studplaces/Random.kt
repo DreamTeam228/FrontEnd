@@ -15,10 +15,17 @@ class Random : AppCompatActivity() {
         //adapter.notifyDataSetChanged()        //true, если данные изменились
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
+        val bar = supportActionBar
+        bar!!.setDisplayHomeAsUpEnabled(true)
     }
     override fun onBackPressed (){
         super.onBackPressed()
         MainActivity.RANDOM_WEEK.clear()
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
     }
 }
 
