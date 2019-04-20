@@ -1,16 +1,15 @@
 package msc.fooxer.studplaces
 
-import android.icu.text.IDNA
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log
-import android.widget.TextView
+import android.app.ActionBar
+import android.content.Intent
+import android.view.MenuItem
 
 import kotlinx.android.synthetic.main.activity_information.*
 import kotlinx.android.synthetic.main.content_information.*
-import msc.fooxer.studplaces.Information.Companion.FROM_FAV
-import msc.fooxer.studplaces.Information.Companion.POSITION
 
 class Information : AppCompatActivity() {
     companion object {
@@ -34,8 +33,10 @@ class Information : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_information)
-        setSupportActionBar(toolbar)
+        //setSupportActionBar(toolbar)
         takeFromIntent()
+        val bar = supportActionBar
+        bar!!.setDisplayHomeAsUpEnabled(true)
 
 
         fab.setOnClickListener { view ->
@@ -86,15 +87,24 @@ class Information : AppCompatActivity() {
             }
     }
 
-    fun takeFromIntent () {
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
+    }
 
+    fun takeFromIntent () {
         Information.POSITION = intent.getIntExtra("POSITION", 0)
         //метод выяснения, откуда запущена активити
         when (FROM_WHERE) {
             "MAIN" -> {
                 FROM_FAV = false
                 name.text = MainActivity.ELEMENTS[POSITION].text
-                price.text = MainActivity.ELEMENTS[POSITION].price.toString()
+                if (MainActivity.ELEMENTS[POSITION].price == 0) {
+                    price.text = "Бесплатно"
+                } else {
+                    val str: String = MainActivity.ELEMENTS[POSITION].price.toString() + " рублей"
+                    price.text = str
+                }
                 description.text = MainActivity.ELEMENTS[POSITION].description
                 if (MainActivity.ELEMENTS[POSITION].isFavorite) {
                     fab.setImageResource(R.drawable.delfav)
@@ -105,7 +115,12 @@ class Information : AppCompatActivity() {
             "FAVORITE" -> {
                 FROM_FAV = true
                 name.text = MainActivity.FAVORITES[POSITION].text
-                price.text = MainActivity.FAVORITES[POSITION].price.toString()
+                if (MainActivity.FAVORITES[POSITION].price == 0) {
+                    price.text = "Бесплатно"
+                } else {
+                    val str: String = MainActivity.FAVORITES[POSITION].price.toString() + " рублей"
+                    price.text = str
+                }
                 description.text = MainActivity.FAVORITES[POSITION].description
                 ELEMENTS_INDEX = MainActivity.ELEMENTS.indexOf(MainActivity.FAVORITES[POSITION])
                 if (MainActivity.FAVORITES[POSITION].isFavorite) {
@@ -118,7 +133,12 @@ class Information : AppCompatActivity() {
                 FROM_FAV = true
                 name.text = MainActivity.RANDOM_WEEK[POSITION].text
                 description.text = MainActivity.RANDOM_WEEK[POSITION].description
-                price.text = MainActivity.RANDOM_WEEK[POSITION].price.toString()
+                if (MainActivity.RANDOM_WEEK[POSITION].price == 0) {
+                    price.text = "Бесплатно"
+                } else {
+                    val str: String = MainActivity.RANDOM_WEEK[POSITION].price.toString() + " рублей"
+                    price.text = str
+                }
                 ELEMENTS_INDEX = MainActivity.ELEMENTS.indexOf(MainActivity.RANDOM_WEEK[POSITION])
                 if (MainActivity.RANDOM_WEEK[POSITION].isFavorite) {
                     fab.setImageResource(R.drawable.delfav)

@@ -26,15 +26,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val DESCRIPTIONS: Array <String> = arrayOf("Зоопарк - описание", "Кинотеатр \"Люксор\" - описание",
             "Антикафе \"12 ярдов\" - описание")
         var IS_FAVORITES : Array<Boolean> = arrayOf(false, false, false)
-        val PRICES: Array <Int> = arrayOf(150, 2000, 124000)
+        val PRICES: Array <Int> = arrayOf(0, 2000, 124000)
         // Здесь заканчивается эмулятор базы данных
 
         // Это глобальный массив объектов, отображающихся на экране
         var ELEMENTS: MutableList<DataElement> = ArrayList()
         var FAVORITES: MutableList<DataElement> = ArrayList()
         var RANDOM_WEEK: MutableList<DataElement> = ArrayList()
-
-
     }
 
     private fun setElements() {
@@ -47,6 +45,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         //setSupportActionBar(toolbar)
+        val bar = supportActionBar
+
 
         setElements()
         val recyclerView = findViewById <RecyclerView> (R.id.list)
