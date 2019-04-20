@@ -9,29 +9,25 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
-        <activity
-                android:name=".Main2Activity"
-                android:label="@string/title_activity_main2">
-        </activity>
+
         <activity
                 android:name=".Favorites"
                 android:label="Избранное"
-                android:theme="@style/AppTheme">
+                android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
                 android:name=".Random"
                 android:label="Неделя случайных событий"
                 android:theme="@style/AppTheme">
         </activity>
-        <activity
-                android:name=".Search"
-                android:label="Поиск"
-                android:theme="@style/AppTheme">
+        <activity android:name=".Search"
+                  android:label="Поиск"
+                  android:theme="@style/AppTheme">
         </activity>
         <activity
                 android:name=".Information"
                 android:label="@string/title_activity_information"
-                android:theme="@style/AppTheme">
+                android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
                 android:name=".MainActivity"

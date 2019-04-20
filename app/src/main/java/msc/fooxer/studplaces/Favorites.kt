@@ -18,14 +18,12 @@ class Favorites : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_favorites)
-        //setSupportActionBar(toolbar)
+        setSupportActionBar(toolbar)
         val recyclerView = findViewById <RecyclerView> (R.id.list)
         val adapter: CustomAdapter = CustomAdapter(this, FAVORITES)
         //adapter.notifyDataSetChanged()        //true, если данные изменились
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
-        val bar = supportActionBar
-        bar!!.setDisplayHomeAsUpEnabled(true)
     }
 
     override fun onResume() {
@@ -41,10 +39,5 @@ class Favorites : AppCompatActivity() {
         super.onBackPressed()
         finish()
         //MainActivity.FAVORITES.clear()
-    }
-
-    override fun onSupportNavigateUp(): Boolean {
-        onBackPressed()
-        return true
     }
 }
