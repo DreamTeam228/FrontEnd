@@ -18,16 +18,9 @@ class Search : AppCompatActivity() {
         category_recycler.layoutManager = LinearLayoutManager(this)
         val metro_recycler = findViewById<RecyclerView>(R.id.metro_view) // Ресайклер для метро
         val adapter_metro = SearchAdapter(this, METRO)
-        adapter_metro.notifyDataSetChanged()
+        //adapter_metro.notifyDataSetChanged()
         metro_recycler.adapter = adapter_metro
         metro_recycler.layoutManager = LinearLayoutManager(this)
 
-        val bar = supportActionBar
-        bar!!.setDisplayHomeAsUpEnabled(true)
-    }
-
-    override fun onSupportNavigateUp(): Boolean {
-        onBackPressed()
-        return true
     }
 }
