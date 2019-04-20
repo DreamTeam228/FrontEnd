@@ -3,8 +3,10 @@ package msc.fooxer.studplaces
 import android.app.Application
 import android.content.Context
 import android.content.Intent
+import android.content.res.Resources
 import android.provider.Settings.System.getString
 import android.support.v4.content.ContextCompat.startActivity
+import android.support.v4.content.res.TypedArrayUtils.getText
 import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.LayoutInflater
@@ -34,7 +36,12 @@ open class CustomAdapter internal constructor(context: Context, private val elem
         val element = elements[i]
         viewHolder.imageView.setImageResource(element.image)
         viewHolder.textView.text = element.text
-        viewHolder.priceView.text = element.price.toString()
+        if (element.price == 0) {
+            viewHolder.priceView.text = "Бесплатно"
+        } else {
+            val str: String = element.price.toString() + " рублей"//context.getString(R.string.rubles)
+            viewHolder.priceView.text = str
+        }
 
         viewHolder.imageView.setOnClickListener(View.OnClickListener {
             val info = Intent (it.context, Information::class.java)

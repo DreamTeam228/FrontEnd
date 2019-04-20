@@ -14,6 +14,7 @@
     <string name="added_to_favorite">Добавлено в Избранное</string>
     <string name="removed_from_favorite">Удалено из Избранного</string>
     <string name="rubles">рублей</string>
+    <string name="free">Бесплатно</string>
     <string name="search">Поиск</string>
 
     <string-array name="titles">
@@ -21,4 +22,8 @@
         <item>Кинотеатр "Люксор"</item>
         <item>Антикафе "12 ярдов"</item>
     </string-array>
+    <string name="title_activity_main2">Main2Activity</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
 </resources>
