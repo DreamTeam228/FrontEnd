@@ -40,9 +40,9 @@ class Information : AppCompatActivity() {
 
 
         fab.setOnClickListener { view ->
-                // проблема в том, что позиции объектов в избранном и в мэин активити не совпадают
-                // поэтому возникает конфликт
-                // в идеале бы сделать это все через указатели, которых в java нет
+            // проблема в том, что позиции объектов в избранном и в мэин активити не совпадают
+            // поэтому возникает конфликт
+            // в идеале бы сделать это все через указатели, которых в java нет
             if (FROM_FAV) { // Заупск из избранного
                 REMOVE_FLAG = false
 
@@ -60,7 +60,7 @@ class Information : AppCompatActivity() {
                 } else {
                     Snackbar.make(view, R.string.removed_from_favorite, Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show()
-                        fab.setImageResource(R.drawable.addfav)
+                    fab.setImageResource(R.drawable.addfav)
                     MainActivity.FAVORITES.remove(MainActivity.ELEMENTS[ELEMENTS_INDEX])
                     REMOVE_FLAG = true
                 }
@@ -83,8 +83,8 @@ class Information : AppCompatActivity() {
                     fab.setImageResource(R.drawable.addfav)
                     MainActivity.FAVORITES.remove(MainActivity.ELEMENTS[POSITION])
                 }
-                }
             }
+        }
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -98,8 +98,8 @@ class Information : AppCompatActivity() {
         when (FROM_WHERE) {
             "MAIN" -> {
                 FROM_FAV = false
-                name.text = MainActivity.ELEMENTS[POSITION].text
-                if (MainActivity.ELEMENTS[POSITION].price == 0) {
+                name.text = MainActivity.ELEMENTS[POSITION].name
+                if (MainActivity.ELEMENTS[POSITION].price == "0") {
                     price.text = "Бесплатно"
                 } else {
                     val str: String = MainActivity.ELEMENTS[POSITION].price.toString() + " рублей"
@@ -114,8 +114,8 @@ class Information : AppCompatActivity() {
             }
             "FAVORITE" -> {
                 FROM_FAV = true
-                name.text = MainActivity.FAVORITES[POSITION].text
-                if (MainActivity.FAVORITES[POSITION].price == 0) {
+                name.text = MainActivity.FAVORITES[POSITION].name
+                if (MainActivity.FAVORITES[POSITION].price == "0") {
                     price.text = "Бесплатно"
                 } else {
                     val str: String = MainActivity.FAVORITES[POSITION].price.toString() + " рублей"
@@ -131,9 +131,9 @@ class Information : AppCompatActivity() {
             }
             "RANDOM" -> {
                 FROM_FAV = true
-                name.text = MainActivity.RANDOM_WEEK[POSITION].text
+                name.text = MainActivity.RANDOM_WEEK[POSITION].name
                 description.text = MainActivity.RANDOM_WEEK[POSITION].description
-                if (MainActivity.RANDOM_WEEK[POSITION].price == 0) {
+                if (MainActivity.RANDOM_WEEK[POSITION].price == "0") {
                     price.text = "Бесплатно"
                 } else {
                     val str: String = MainActivity.RANDOM_WEEK[POSITION].price.toString() + " рублей"
@@ -145,7 +145,7 @@ class Information : AppCompatActivity() {
                 } else {
                     fab.setImageResource(R.drawable.addfav)
                 }
-                            }
+            }
         }
 
         Log.d("===ELEMENT_TEXT===", "NAME OF ELEMENT IS ${name.text}")

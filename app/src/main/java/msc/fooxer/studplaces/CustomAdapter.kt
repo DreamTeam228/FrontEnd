@@ -13,11 +13,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.checkbox_element.view.*
 import java.util.zip.Inflater
 
 
-open class CustomAdapter internal constructor(context: Context, private val elements: List<DataElement>) :
+open class CustomAdapter internal constructor(context: Context, private val elements: List<Place>) :
     RecyclerView.Adapter<CustomAdapter.ViewHolder>() {
 
     private val inflater: LayoutInflater
@@ -31,22 +32,27 @@ open class CustomAdapter internal constructor(context: Context, private val elem
         return ViewHolder(view)
     }
 
-  open override fun onBindViewHolder(viewHolder: ViewHolder, i: Int) {
+    open override fun onBindViewHolder(viewHolder: ViewHolder, i: Int) {
         Log.d("VIEWHOLDER_POSITION", "POSITION IS $i")
         val element = elements[i]
-        viewHolder.imageView.setImageResource(element.image)
-        viewHolder.textView.text = element.text
-        if (element.price == 0) {
+        //viewHolder.imageView.setImageResource(R.drawable.samurai) // по урл
+        Picasso.get()
+            .load(element.picture)
+            .error(R.drawable.samurai)
+            .placeholder(R.drawable.zoo)
+            .into(viewHolder.imageView)
+        viewHolder.textView.text = element.name
+        if (element.price == "0") {
             viewHolder.priceView.text = "Бесплатно"
         } else {
-            val str: String = element.price.toString() + " рублей"//context.getString(R.string.rubles)
+            val str = " ${element.price}  рублей"//context.getString(R.string.rubles)
             viewHolder.priceView.text = str
         }
 
         viewHolder.imageView.setOnClickListener(View.OnClickListener {
             val info = Intent (it.context, Information::class.java)
             info.putExtra("POSITION", i)
-               // info.putExtra("FROM_FAV", false)
+            // info.putExtra("FROM_FAV", false)
             /*info.putExtra(Information.NAME, elements[i].text)
             info.putExtra("IS_FAVORITE", elements[i].isFavorite)*/
             startActivity(it.context, info, null)

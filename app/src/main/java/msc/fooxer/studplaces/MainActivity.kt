@@ -1,6 +1,7 @@
 package msc.fooxer.studplaces
 
 import android.content.Intent
+import android.os.AsyncTask
 import android.os.Bundle
 import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
@@ -13,14 +14,25 @@ import android.view.MenuItem
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.content_main.*
+import java.io.BufferedReader
+import java.io.IOException
+import java.io.InputStreamReader
+import java.net.HttpURLConnection
+import java.net.MalformedURLException
+import java.net.URL
 import java.util.ArrayList
 import kotlin.collections.MutableMap
 
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+    // Переменная на массив мест
+
+
 
     companion object Storage { // Массивы Констант (метро, категории) - в файле Constants
         // Здесь начинается эмулятор базы данных
+        var JString : String = ""
+        //var Places : Array<DataPlaces> = Arra
         var IMAGES : Array<Int> = arrayOf(R.drawable.zoo, R.drawable.cinema, R.drawable.yard)
         val NAMES: Array <String> = arrayOf("Зоопарк", "Кинотеатр \"Люксор\"", "Антикафе \"12 ярдов\"")
         val DESCRIPTIONS: Array <String> = arrayOf("Зоопарк - описание", "Кинотеатр \"Люксор\" - описание",
@@ -30,25 +42,25 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         // Здесь заканчивается эмулятор базы данных
 
         // Это глобальный массив объектов, отображающихся на экране
-        var ELEMENTS: MutableList<DataElement> = ArrayList()
-        var FAVORITES: MutableList<DataElement> = ArrayList()
-        var RANDOM_WEEK: MutableList<DataElement> = ArrayList()
+        //var ELEMENTS: MutableList<DataElement> = ArrayList()
+        var ELEMENTS:ArrayList<Place> = ArrayList()
+        var FAVORITES: MutableList<Place> = ArrayList()
+        var RANDOM_WEEK: MutableList<Place> = ArrayList()
     }
 
-    private fun setElements() {
-        for (i in 0 until NAMES.size) {
-            ELEMENTS.add(DataElement(IMAGES[i], NAMES[i], DESCRIPTIONS[i], PRICES[i], IS_FAVORITES[i]))
-        }
-    }
+    /* private fun setElements() {
+         for (i in 0 until NAMES.size) {
+             ELEMENTS.add(DataElement(IMAGES[i], NAMES[i], DESCRIPTIONS[i], PRICES[i], IS_FAVORITES[i]))
+         }
+     }*/
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         //setSupportActionBar(toolbar)
-        val bar = supportActionBar
-
-
-        setElements()
+        // val bar = supportActionBar
+        //setElements()
+        ELEMENTS = intent.getParcelableArrayListExtra<Place>("dp_ELEMENTS")
         val recyclerView = findViewById <RecyclerView> (R.id.list)
         val adapter: CustomAdapter = CustomAdapter(this, ELEMENTS)
         recyclerView.adapter = adapter
@@ -67,6 +79,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         nav_view.setNavigationItemSelectedListener(this)
     }
+    // Сюда будут приходить разные линки(рандом или фулл или поиск)
+
+
 
     override fun onBackPressed() {
         if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
@@ -131,3 +146,4 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         Information.FROM_WHERE = "MAIN"
     }
 }
+
