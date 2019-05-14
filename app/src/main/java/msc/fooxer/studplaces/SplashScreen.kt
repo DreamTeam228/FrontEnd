@@ -14,15 +14,15 @@ import java.util.ArrayList
 class SplashScreen : AppCompatActivity() {
     var dp : ArrayList<Place> = ArrayList()
     var pla: DataPlaces = DataPlaces()
-    var bp: Boolean = false
+    //var bp: Boolean = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash_screen)
-        AsynkJson2(this).execute()
+        AsynkJson(this).execute()
     }
 
 
-    inner class AsynkJson2(private val context: Context): AsyncTask<Void, Void, String>()
+    inner class AsynkJson(private val context: Context): AsyncTask<Void, Void, String>()
     {
         var json_url: String = ""
         override fun onPreExecute() {
@@ -57,7 +57,6 @@ class SplashScreen : AppCompatActivity() {
             if(dp.isNotEmpty())
                 Toast.makeText(context, "Data is downloaded", Toast.LENGTH_LONG).show() //ok
 
-            //// new intent
             val i = Intent(baseContext, MainActivity::class.java)
             i.putParcelableArrayListExtra("dp_ELEMENTS", dp)
             startActivity(i)

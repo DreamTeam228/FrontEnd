@@ -120,9 +120,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 startActivity(fav)
             }
             R.id.Random -> {
-                var rand = Intent (this, Information::class.java)
+                var rand = Intent (this, InformationEdited::class.java)
                 val element = Math.random()*10
-                rand.putExtra("POSITION", element.toInt()%ELEMENTS.size)
+                rand.putExtra("elements", ELEMENTS[element.toInt()%ELEMENTS.size])
                 // заполнить одним элементом
                 startActivity(rand)
             }

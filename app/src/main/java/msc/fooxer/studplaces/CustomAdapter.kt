@@ -4,6 +4,7 @@ import android.app.Application
 import android.content.Context
 import android.content.Intent
 import android.content.res.Resources
+import android.os.Bundle
 import android.provider.Settings.System.getString
 import android.support.v4.content.ContextCompat.startActivity
 import android.support.v4.content.res.TypedArrayUtils.getText
@@ -14,8 +15,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.checkbox_element.view.*
-import java.util.zip.Inflater
 
 
 open class CustomAdapter internal constructor(context: Context, private val elements: List<Place>) :
@@ -32,26 +31,27 @@ open class CustomAdapter internal constructor(context: Context, private val elem
         return ViewHolder(view)
     }
 
-    open override fun onBindViewHolder(viewHolder: ViewHolder, i: Int) {
+    override fun onBindViewHolder(viewHolder: ViewHolder, i: Int) {
         Log.d("VIEWHOLDER_POSITION", "POSITION IS $i")
         val element = elements[i]
         //viewHolder.imageView.setImageResource(R.drawable.samurai) // по урл
         Picasso.get()
             .load(element.picture)
             .error(R.drawable.samurai)
-            .placeholder(R.drawable.zoo)
+            .placeholder(R.color.Metro_Line9)
             .into(viewHolder.imageView)
         viewHolder.textView.text = element.name
         if (element.price == "0") {
             viewHolder.priceView.text = "Бесплатно"
         } else {
-            val str = " ${element.price}  рублей"//context.getString(R.string.rubles)
+            val str = " ${element.price} рублей"//context.getString(R.string.rubles)
             viewHolder.priceView.text = str
         }
 
         viewHolder.imageView.setOnClickListener(View.OnClickListener {
-            val info = Intent (it.context, Information::class.java)
+            val info = Intent (it.context, InformationEdited::class.java)
             info.putExtra("POSITION", i)
+            info.putExtra("elements", elements[i])
             // info.putExtra("FROM_FAV", false)
             /*info.putExtra(Information.NAME, elements[i].text)
             info.putExtra("IS_FAVORITE", elements[i].isFavorite)*/
