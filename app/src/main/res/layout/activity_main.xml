@@ -23,6 +23,8 @@
             android:background="@color/colorPrimaryDark"
             app:menu="@menu/activity_main_drawer"
             app:itemTextColor="@color/textColor"
-            app:itemIconTint="@color/textColor"/>
+            app:itemIconTint="@color/textColor" app:itemTextAppearance="@style/TextAppearance.AppCompat.Medium"
+            app:itemIconPadding="16dp" android:layoutDirection="ltr"
+    />
 
 </android.support.v4.widget.DrawerLayout>

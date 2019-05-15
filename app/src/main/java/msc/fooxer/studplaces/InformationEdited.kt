@@ -23,7 +23,7 @@ class InformationEdited : AppCompatActivity(){
         place = intent.getParcelableExtra("elements")
 
         name.text = place.name
-        price.text = place.price
+        price.text = place.price.toString()
         description.text = place.description
         Picasso.get()
             .load(place.picture)

@@ -17,7 +17,7 @@ import java.net.URL
 import java.util.ArrayList
 
 class DataPlaces {
-    val place: Place = Place("","","","","","","","","")
+   // val place: Place = Place("","","","","","","","","")
     val places = ArrayList<Place>()
     var jsonobject: JSONObject = JSONObject()
     var jsonArray: JSONArray = JSONArray()
@@ -28,26 +28,26 @@ class DataPlaces {
             jsonobject = JSONObject(Json_string)
             jsonArray = jsonobject.getJSONArray("places")
             var count = 0
-            var id = ""
+            var id : Int
             var name = ""
             var category = ""
             var description = ""
             var metro = ""
             var phoneNumbers = ""
-            var price = ""
+            var price : Int
             var place1 = ""
             var picture = ""
             // Присвоение полям объекта класса
             while (count < jsonArray.length()) {
                 val Jsonchik = jsonArray.getJSONObject(count)
-                id = Jsonchik.getString("id")
+                id = Jsonchik.getInt("id")
                 name = Jsonchik.getString("name")
                 category = Jsonchik.getString("category")
                 description = Jsonchik.getString("description")
                 metro = Jsonchik.getString("metro")
                 phoneNumbers = ""
                 place1 = Jsonchik.getString("place")
-                price = Jsonchik.getString("price")
+                price = Jsonchik.getInt("price")
                 picture = Jsonchik.getString("picture")
                 count++
                 val place = Place(id, name, category, description, metro, phoneNumbers, price, place1, picture)

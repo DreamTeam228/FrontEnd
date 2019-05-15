@@ -41,7 +41,7 @@ open class CustomAdapter internal constructor(context: Context, private val elem
             .placeholder(R.color.Metro_Line9)
             .into(viewHolder.imageView)
         viewHolder.textView.text = element.name
-        if (element.price == "0") {
+        if (element.price == 0) {
             viewHolder.priceView.text = "Бесплатно"
         } else {
             val str = " ${element.price} рублей"//context.getString(R.string.rubles)

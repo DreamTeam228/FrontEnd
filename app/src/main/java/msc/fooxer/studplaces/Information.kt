@@ -45,7 +45,7 @@ class Information : AppCompatActivity() {
         if (place.isFavorite) fab.setImageResource(R.drawable.delfav) else fab.setImageResource(R.drawable.addfav)
 
         name.text = place.name
-        price.text = place.price
+        price.text = if (place.price != 0) "${place.price} рублей" else "Бесплатно"
         description.text = place.description
         Picasso.get()
             .load(place.picture)
