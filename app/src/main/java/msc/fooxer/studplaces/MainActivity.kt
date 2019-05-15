@@ -1,10 +1,8 @@
 package msc.fooxer.studplaces
 
 import android.content.Intent
-import android.os.AsyncTask
 import android.os.Bundle
 import android.support.design.widget.NavigationView
-import android.support.v4.content.ContextCompat.startActivity
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
@@ -15,18 +13,11 @@ import android.view.MenuItem
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.content_main.*
-import java.io.BufferedReader
-import java.io.IOException
-import java.io.InputStreamReader
-import java.net.HttpURLConnection
-import java.net.MalformedURLException
-import java.net.URL
 import java.util.ArrayList
-import kotlin.collections.MutableMap
 
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
-    // Переменная на массив мест
+
 
 
     companion object Storage { // Массивы Констант (метро, категории) - в файле Constants
@@ -34,19 +25,38 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
 
         // Это глобальный массив объектов, отображающихся на экране
-        //var ELEMENTS: MutableList<DataElement> = ArrayList()
+
         var ELEMENTS:ArrayList<Place> = ArrayList()
         var FAVORITES: MutableList<Place> = ArrayList()
         var RANDOM_WEEK: MutableList<Place> = ArrayList()
+        var FAV_INDEXES: ArrayList<Int> = ArrayList()
         var REMOVE_FLAG: Boolean = false
         var pla: DataPlaces = DataPlaces()
+
+        fun changeFav (place: Place) {
+            REMOVE_FLAG = false
+            place.isFavorite = !place.isFavorite
+            ELEMENTS.find {
+                it.id == place.id
+            }!!.isFavorite = place.isFavorite
+            REMOVE_FLAG = if (place.isFavorite) {
+                FAVORITES.add(place)
+                FAV_INDEXES.add(place.id)
+                false
+            } else {
+                FAVORITES.remove (
+                    FAVORITES.find {
+                        it.id == place.id
+                    }
+                )
+                FAV_INDEXES.remove(place.id)
+                true
+            }
+
+
+        }
     }
 
-    /* private fun setElements() {
-         for (i in 0 until NAMES.size) {
-             ELEMENTS.add(DataElement(IMAGES[i], NAMES[i], DESCRIPTIONS[i], PRICES[i], IS_FAVORITES[i]))
-         }
-     }*/
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

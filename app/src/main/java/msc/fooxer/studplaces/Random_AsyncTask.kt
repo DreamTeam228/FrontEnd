@@ -72,6 +72,8 @@ class Random_AsyncTask(private val context : Context)  : AsyncTask <Void, Void, 
         }
         if(MainActivity.RANDOM_WEEK.isNotEmpty())
             Toast.makeText(context, "Data is downloaded", Toast.LENGTH_LONG).show() //ok
+        for (i in 0 until MainActivity.RANDOM_WEEK.size)
+            if (MainActivity.RANDOM_WEEK[i].id in MainActivity.FAV_INDEXES) MainActivity.RANDOM_WEEK[i].isFavorite = true
 
         val i = Intent(context, Random::class.java)
         startActivity(context, i, null)

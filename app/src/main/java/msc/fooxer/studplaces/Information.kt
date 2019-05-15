@@ -15,6 +15,7 @@ import kotlinx.android.synthetic.main.content_information.price
 import msc.fooxer.studplaces.MainActivity.Storage.ELEMENTS
 import msc.fooxer.studplaces.MainActivity.Storage.FAVORITES
 import msc.fooxer.studplaces.MainActivity.Storage.RANDOM_WEEK
+import msc.fooxer.studplaces.MainActivity.Storage.changeFav
 
 class Information : AppCompatActivity() {
     companion object {
@@ -29,8 +30,7 @@ class Information : AppCompatActivity() {
         var FROM_WHERE = "NAME"
 
         //
-        var REMOVE_FLAG = false
-
+        
         //
         var ELEMENTS_INDEX = 0
     }
@@ -39,7 +39,7 @@ class Information : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_information)
         //setSupportActionBar(toolbar)
-        takeFromIntent()
+        //takeFromIntent()
 
        val place: Place = intent.getParcelableExtra("element")
         if (place.isFavorite) fab.setImageResource(R.drawable.delfav) else fab.setImageResource(R.drawable.addfav)
@@ -60,10 +60,20 @@ class Information : AppCompatActivity() {
 
 
         fab.setOnClickListener { view ->
+            changeFav(place)
+            if (place.isFavorite) {
+                Snackbar.make(view, R.string.added_to_favorite, Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show()
+                fab.setImageResource(R.drawable.delfav)
+            } else {
+                Snackbar.make(view, R.string.removed_from_favorite, Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show()
+                fab.setImageResource(R.drawable.addfav)
+            }
             // проблема в том, что позиции объектов в избранном и в мэин активити не совпадают
             // поэтому возникает конфликт
             // в идеале бы сделать это все через указатели, которых в java нет
-            if (FROM_FAV) { // Заупск из избранного
+            /*if (FROM_FAV) { // Заупск из избранного
                 REMOVE_FLAG = false
 
                 ELEMENTS[ELEMENTS_INDEX].isFavorite = !ELEMENTS[ELEMENTS_INDEX].isFavorite
@@ -100,7 +110,8 @@ class Information : AppCompatActivity() {
                     fab.setImageResource(R.drawable.addfav)
                     FAVORITES.remove(ELEMENTS[POSITION])
                 }
-            }
+            }*/
+
         }
     }
 

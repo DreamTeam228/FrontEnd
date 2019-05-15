@@ -30,10 +30,10 @@ class Favorites : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        if (Information.REMOVE_FLAG) {
+        if (MainActivity.REMOVE_FLAG) {
             finish()
             startActivity(Intent( this, this.javaClass))
-            Information.REMOVE_FLAG = !Information.REMOVE_FLAG
+            MainActivity.REMOVE_FLAG = !MainActivity.REMOVE_FLAG
         }
     }
 
