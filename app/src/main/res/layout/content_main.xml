@@ -7,13 +7,14 @@
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         tools:showIn="@layout/app_bar_main"
+        android:background="@color/textColor"
         tools:context=".MainActivity" android:visibility="visible">
     <android.support.design.widget.FloatingActionButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:clickable="true" app:srcCompat="@android:drawable/ic_menu_search"
             android:id="@+id/search_button"
-            app:rippleColor="@color/colorAccent" app:backgroundTint="@color/colorMenu"
+            app:rippleColor="@color/colorAccent" app:backgroundTint="@color/colorAccent"
             android:layout_marginBottom="8dp" app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginEnd="8dp" app:layout_constraintEnd_toEndOf="parent" android:layout_marginStart="8dp"
             app:layout_constraintStart_toStartOf="parent" android:layout_marginTop="8dp"

@@ -7,6 +7,7 @@
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         tools:showIn="@layout/activity_information"
+        android:background="@color/textColor"
         tools:context=".Information" android:scrollbars="vertical" android:soundEffectsEnabled="true"
         android:splitMotionEvents="true">
 
@@ -23,13 +24,14 @@
                 android:paddingStart="8dp" android:paddingTop="8dp">
             <ImageView
                     android:layout_width="400dp"
-                    android:layout_height="222dp" app:srcCompat="@drawable/cinema" android:id="@+id/informationImage"
+                    android:layout_height="222dp" app:srcCompat="@drawable/samurai" android:id="@+id/informationImage"
                     android:scaleType="centerCrop"/>
             <TextView
                     android:text="@string/app_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" android:id="@+id/name" android:textSize="24sp"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Large"/>
+                    android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                    android:textColor="@color/colorPrimary"/>
             <TextView
                     android:text="price"
                     android:layout_width="match_parent"

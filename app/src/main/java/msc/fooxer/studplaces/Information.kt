@@ -42,7 +42,7 @@ class Information : AppCompatActivity() {
         takeFromIntent()
 
        val place: Place = intent.getParcelableExtra("element")
-        if (place.isFavorite) fab.setImageResource(R.drawable.delfav) else fab.setImageResource(R.drawable.favs)
+        if (place.isFavorite) fab.setImageResource(R.drawable.delfav) else fab.setImageResource(R.drawable.addfav)
 
         name.text = place.name
         price.text = place.price
@@ -77,7 +77,7 @@ class Information : AppCompatActivity() {
                 } else {
                     Snackbar.make(view, R.string.removed_from_favorite, Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show()
-                    fab.setImageResource(R.drawable.favs)
+                    fab.setImageResource(R.drawable.addfav)
                     MainActivity.FAVORITES.remove(ELEMENTS[ELEMENTS_INDEX])
                     REMOVE_FLAG = true
                 }
@@ -97,7 +97,7 @@ class Information : AppCompatActivity() {
                 } else {
                     Snackbar.make(view, R.string.removed_from_favorite, Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show()
-                    fab.setImageResource(R.drawable.favs)
+                    fab.setImageResource(R.drawable.addfav)
                     FAVORITES.remove(ELEMENTS[POSITION])
                 }
             }
