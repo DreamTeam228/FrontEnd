@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.AsyncTask
 import android.os.Bundle
 import android.support.design.widget.NavigationView
+import android.support.v4.content.ContextCompat.startActivity
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
@@ -28,24 +29,17 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     // Переменная на массив мест
 
 
-
     companion object Storage { // Массивы Констант (метро, категории) - в файле Constants
         // Здесь начинается эмулятор базы данных
-        var JString : String = ""
-        //var Places : Array<DataPlaces> = Arra
-        var IMAGES : Array<Int> = arrayOf(R.drawable.zoo, R.drawable.cinema, R.drawable.yard)
-        val NAMES: Array <String> = arrayOf("Зоопарк", "Кинотеатр \"Люксор\"", "Антикафе \"12 ярдов\"")
-        val DESCRIPTIONS: Array <String> = arrayOf("Зоопарк - описание", "Кинотеатр \"Люксор\" - описание",
-            "Антикафе \"12 ярдов\" - описание")
-        var IS_FAVORITES : Array<Boolean> = arrayOf(false, false, false)
-        val PRICES: Array <Int> = arrayOf(0, 2000, 124000)
-        // Здесь заканчивается эмулятор базы данных
+
 
         // Это глобальный массив объектов, отображающихся на экране
         //var ELEMENTS: MutableList<DataElement> = ArrayList()
         var ELEMENTS:ArrayList<Place> = ArrayList()
         var FAVORITES: MutableList<Place> = ArrayList()
         var RANDOM_WEEK: MutableList<Place> = ArrayList()
+        var REMOVE_FLAG: Boolean = false
+        var pla: DataPlaces = DataPlaces()
     }
 
     /* private fun setElements() {
@@ -120,20 +114,17 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 startActivity(fav)
             }
             R.id.Random -> {
-                var rand = Intent (this, InformationEdited::class.java)
+                var rand = Intent (this, Information::class.java)
                 val element = Math.random()*10
-                rand.putExtra("elements", ELEMENTS[element.toInt()%ELEMENTS.size])
+                rand.putExtra("POSITION", element.toInt()%ELEMENTS.size)
+                rand.putExtra("element", ELEMENTS[element.toInt()%ELEMENTS.size])
                 // заполнить одним элементом
                 startActivity(rand)
             }
             R.id.Random_week -> {
                 Information.FROM_WHERE = "RANDOM"
-                for (i in 0..2) {
-                    RANDOM_WEEK.add(ELEMENTS[(Math.random()*10).toInt()% ELEMENTS.size])
-                }
-                var rand = Intent (this, Random::class.java)
-                // заполнить массивом
-                startActivity(rand)
+                var asynkTaskRandomWeek = Random_AsyncTask(this)
+                asynkTaskRandomWeek.execute()
             }
         }
 

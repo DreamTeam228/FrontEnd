@@ -6,7 +6,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_information.*
+import kotlinx.android.synthetic.main.activity_information_edited.*
 import kotlinx.android.synthetic.main.content_information.*
+import kotlinx.android.synthetic.main.content_information.description
+import kotlinx.android.synthetic.main.content_information.informationImage
+import kotlinx.android.synthetic.main.content_information.name
+import kotlinx.android.synthetic.main.content_information.price
 import msc.fooxer.studplaces.MainActivity.Storage.ELEMENTS
 import msc.fooxer.studplaces.MainActivity.Storage.FAVORITES
 import msc.fooxer.studplaces.MainActivity.Storage.RANDOM_WEEK
@@ -34,9 +39,10 @@ class Information : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_information)
         //setSupportActionBar(toolbar)
-        //takeFromIntent()
+        takeFromIntent()
 
-        val place: Place = intent.getParcelableExtra<Place>("elements")
+       val place: Place = intent.getParcelableExtra("element")
+        if (place.isFavorite) fab.setImageResource(R.drawable.delfav) else fab.setImageResource(R.drawable.favs)
 
         name.text = place.name
         price.text = place.price
@@ -60,9 +66,6 @@ class Information : AppCompatActivity() {
             if (FROM_FAV) { // Заупск из избранного
                 REMOVE_FLAG = false
 
-                //Log.d(
-                //   "==POS_IN_ELEM==" ,"POS IN ELEMS IS $ELEMENTS_INDEX IN FAV $POSITION AND NAME IS ${MainActivity.FAVORITES[POSITION].text}"
-                //) // все работает
                 ELEMENTS[ELEMENTS_INDEX].isFavorite = !ELEMENTS[ELEMENTS_INDEX].isFavorite
                 //MainActivity.FAVORITES[POSITION].isFavorite = MainActivity.ELEMENTS[ELEMENTS_INDEX].isFavorite
                 if (ELEMENTS[ELEMENTS_INDEX].isFavorite) {
@@ -74,7 +77,7 @@ class Information : AppCompatActivity() {
                 } else {
                     Snackbar.make(view, R.string.removed_from_favorite, Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show()
-                    fab.setImageResource(R.drawable.addfav)
+                    fab.setImageResource(R.drawable.favs)
                     MainActivity.FAVORITES.remove(ELEMENTS[ELEMENTS_INDEX])
                     REMOVE_FLAG = true
                 }
@@ -94,7 +97,7 @@ class Information : AppCompatActivity() {
                 } else {
                     Snackbar.make(view, R.string.removed_from_favorite, Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show()
-                    fab.setImageResource(R.drawable.addfav)
+                    fab.setImageResource(R.drawable.favs)
                     FAVORITES.remove(ELEMENTS[POSITION])
                 }
             }
@@ -112,7 +115,7 @@ class Information : AppCompatActivity() {
         when (FROM_WHERE) {
             "MAIN" -> {
                 FROM_FAV = false
-                name.text = ELEMENTS[POSITION].name
+               /* name.text = ELEMENTS[POSITION].name
                 if (ELEMENTS[POSITION].price == "0") {
                     price.text = "Бесплатно"
                 } else {
@@ -123,7 +126,7 @@ class Information : AppCompatActivity() {
                 if (ELEMENTS[POSITION].isFavorite) {
                     fab.setImageResource(R.drawable.delfav)
                 } else {
-                    fab.setImageResource(R.drawable.addfav)
+                    fab.setImageResource(R.drawable.favs)
                 }
                 // !!!!!
                 // Можно попробовать перенести в асинкТаск
@@ -131,53 +134,53 @@ class Information : AppCompatActivity() {
                 Picasso.get()
                     .load(ELEMENTS[POSITION].picture)
                     .error(R.drawable.samurai)
-                    .placeholder(R.color.abc_primary_text_material_light)
-                    .into(informationImage)
+                    .placeholder(R.color.Metro_Line9)
+                    .into(informationImage)*/
             }
             "FAVORITE" -> {
                 FROM_FAV = true
-                name.text = FAVORITES[POSITION].name
+               /* name.text = FAVORITES[POSITION].name
                 if (FAVORITES[POSITION].price == "0") {
                     price.text = "Бесплатно"
                 } else {
                     val str: String = "${FAVORITES[POSITION].price} рублей"
                     price.text = str
                 }
-                description.text = FAVORITES[POSITION].description
+                description.text = FAVORITES[POSITION].description*/
                 ELEMENTS_INDEX = MainActivity.ELEMENTS.indexOf(FAVORITES[POSITION])
-                if (FAVORITES[POSITION].isFavorite) {
+               /* if (FAVORITES[POSITION].isFavorite) {
                     fab.setImageResource(R.drawable.delfav)
                 } else {
-                    fab.setImageResource(R.drawable.addfav)
+                    fab.setImageResource(R.drawable.favs)
                 }
                 //
                 Picasso.get()
                     .load(FAVORITES[POSITION].picture)
                     .error(R.drawable.samurai)
-                    .placeholder(R.color.abc_primary_text_material_light)
-                    .into(informationImage)
+                    .placeholder(R.color.Metro_Line9)
+                    .into(informationImage)*/
             }
             "RANDOM" -> {
                 FROM_FAV = true
-                name.text = RANDOM_WEEK[POSITION].name
+                /*name.text = RANDOM_WEEK[POSITION].name
                 description.text = RANDOM_WEEK[POSITION].description
                 if (RANDOM_WEEK[POSITION].price == "0") {
                     price.text = "Бесплатно"
                 } else {
                     val str: String = "${RANDOM_WEEK[POSITION].price} рублей"
                     price.text = str
-                }
+                }*/
                 ELEMENTS_INDEX = MainActivity.ELEMENTS.indexOf(RANDOM_WEEK[POSITION])
-                if (RANDOM_WEEK[POSITION].isFavorite) {
+                /*if (RANDOM_WEEK[POSITION].isFavorite) {
                     fab.setImageResource(R.drawable.delfav)
                 } else {
-                    fab.setImageResource(R.drawable.addfav)
+                    fab.setImageResource(R.drawable.favs)
                 }
                 Picasso.get()
                     .load(RANDOM_WEEK[POSITION].picture)
                     .error(R.drawable.samurai)
-                    .placeholder(R.color.abc_primary_text_material_light)
-                    .into(informationImage)
+                    .placeholder(R.color.Metro_Line9)
+                    .into(informationImage)*/
             }
         }
 

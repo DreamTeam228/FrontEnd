@@ -13,7 +13,7 @@ import java.util.ArrayList
 
 class SplashScreen : AppCompatActivity() {
     var dp : ArrayList<Place> = ArrayList()
-    var pla: DataPlaces = DataPlaces()
+
     //var bp: Boolean = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,7 +50,7 @@ class SplashScreen : AppCompatActivity() {
         override fun onPostExecute(result: String) {
             super.onPostExecute(result)
             try {
-                dp = pla.getInfo(result)
+                dp = MainActivity.pla.getInfo(result)
             } catch (e: Exception) {
                 Toast.makeText(context, print(e.message).toString(), Toast.LENGTH_LONG).show()
             }

@@ -49,9 +49,9 @@ open class CustomAdapter internal constructor(context: Context, private val elem
         }
 
         viewHolder.imageView.setOnClickListener(View.OnClickListener {
-            val info = Intent (it.context, InformationEdited::class.java)
+            val info = Intent (it.context, Information::class.java)
             info.putExtra("POSITION", i)
-            info.putExtra("elements", elements[i])
+            info.putExtra("element", elements[i])
             // info.putExtra("FROM_FAV", false)
             /*info.putExtra(Information.NAME, elements[i].text)
             info.putExtra("IS_FAVORITE", elements[i].isFavorite)*/

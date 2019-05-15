@@ -22,6 +22,7 @@ class DataPlaces {
     var jsonobject: JSONObject = JSONObject()
     var jsonArray: JSONArray = JSONArray()
 
+
     fun getInfo(Json_string: String): ArrayList<Place> {
         try {
             jsonobject = JSONObject(Json_string)
