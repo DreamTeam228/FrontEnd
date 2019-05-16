@@ -119,7 +119,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         // Handle navigation view item clicks here.
         when (item.itemId) {
             R.id.Favorite -> {
-                Information.FROM_WHERE = "FAVORITE"
                 var fav = Intent (this, Favorites::class.java)
                 startActivity(fav)
             }
@@ -132,7 +131,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 startActivity(rand)
             }
             R.id.Random_week -> {
-                Information.FROM_WHERE = "RANDOM"
                 var asynkTaskRandomWeek = Random_AsyncTask(this)
                 asynkTaskRandomWeek.execute()
             }
@@ -144,7 +142,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
     override fun onResume() {
         super.onResume()
-        Information.FROM_WHERE = "MAIN"
     }
 }
 

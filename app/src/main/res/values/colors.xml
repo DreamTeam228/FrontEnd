@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#222831</color>
-    <color name="colorPrimaryDark">#393E46</color>
+    <color name="colorPrimary">#393E46</color>
+    <color name="colorPrimaryDark">#222831</color>
     <color name="colorAccent">#D65A31</color>
     <color name="textColor">#EEEEEE</color>
+    <color name="background">#747A86</color>
     <color name="Metro_Line1">#EC0808</color>
     <color name="Metro_Line2">#0D6310</color>
-    <color name="Metro_Line3">#D8DCE6</color>
+    <color name="Metro_Line3">#002A85</color>
     <color name="Metro_Line4">#03A9F4</color>
     <color name="Metro_Line5">#411F10</color>
     <color name="Metro_Line6">#FF8400</color>

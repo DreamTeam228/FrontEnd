@@ -48,15 +48,6 @@ open class CustomAdapter internal constructor(context: Context, private val elem
             viewHolder.priceView.text = str
         }
 
-        viewHolder.imageView.setOnClickListener(View.OnClickListener {
-            val info = Intent (it.context, Information::class.java)
-            info.putExtra("POSITION", i)
-            info.putExtra("element", elements[i])
-            // info.putExtra("FROM_FAV", false)
-            /*info.putExtra(Information.NAME, elements[i].text)
-            info.putExtra("IS_FAVORITE", elements[i].isFavorite)*/
-            startActivity(it.context, info, null)
-        })
     }
 
     override fun getItemCount(): Int {
@@ -72,7 +63,13 @@ open class CustomAdapter internal constructor(context: Context, private val elem
             imageView = view.findViewById<View>(R.id.photo) as ImageView
             textView = view.findViewById<View>(R.id.description) as TextView
             priceView = view.findViewById<View>(R.id.price) as TextView
+            view.setOnClickListener{
+                val info = Intent (it.context, Information::class.java)
+                info.putExtra("element", elements[adapterPosition])
+                startActivity(it.context, info, null)
+            }
         }
+
     }
 }
 
