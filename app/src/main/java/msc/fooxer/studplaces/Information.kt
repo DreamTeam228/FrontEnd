@@ -6,7 +6,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_information.*
-import kotlinx.android.synthetic.main.activity_information_edited.*
 import kotlinx.android.synthetic.main.content_information.*
 import kotlinx.android.synthetic.main.content_information.description
 import kotlinx.android.synthetic.main.content_information.informationImage
@@ -37,6 +36,8 @@ class Information : AppCompatActivity() {
             .error(R.drawable.samurai)
             .placeholder(R.color.Metro_Line9)
             .into(informationImage)
+        address.text = place.address
+        phone.text = place.phoneNumbers
 
 
 

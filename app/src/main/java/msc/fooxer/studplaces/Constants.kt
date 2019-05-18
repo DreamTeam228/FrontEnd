@@ -10,3 +10,30 @@ var METRO: Array <SearchOption> = arrayOf(SearchOption("Сокольническ
     SearchOption("Серпуховско-Тимирязевская линия", R.color.Metro_Line9), SearchOption("Люблюнско-Дмитровская линия", R.color.Metro_Line10), SearchOption("Каховская линия", R.color.Metro_Line11),
     SearchOption("Бутовсская линия", R.color.Metro_Line12),SearchOption("МЦК", R.color.Metro_Line14), SearchOption("Большая кольцевая линия", R.color.Metro_Line15))
 //var LINE_1: Array <SearchOption> = arrayOf()
+    val DB_NAME = "LOCAL_DATABASE"
+    var CURRENT_VER = 1
+    val FAV_TABLE_NAME = "FAVORITES"
+    val CASH_TABLE_NAME = "CASH"
+    val KEY_INDEX = "ID"
+    val KEY_NAME = "NAME"
+    val KEY_CATEGORY = "CATEGORY"
+    val KEY_DESCR = "DESCRIPTION"
+    val KEY_METRO = "METRO"
+    val KEY_PHONE = "PHONE"
+    val KEY_ADDRESS = "ADDRESS"
+    val KEY_PRICE = "PRICE"
+    val KEY_PIC = "PICTURE"
+    val KEY_FAV = "FAV"
+
+
+
+/*val id: Int,
+    val name: String,
+    val Сategory: String,
+    val description: String,
+    val metro: String,
+    val phoneNumbers: String,
+    val price: Int,
+    val address: String, // Сюда нужен код для получения картинки и ее обработки BitMap
+    var picture: String,
+    var isFavorite: Boolean = false*/

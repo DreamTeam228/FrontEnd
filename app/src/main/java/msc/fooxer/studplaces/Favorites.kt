@@ -3,12 +3,8 @@ package msc.fooxer.studplaces
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.support.v4.view.GravityCompat
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import kotlinx.android.synthetic.main.activity_favorites.*
-import kotlinx.android.synthetic.main.activity_main.*
-import msc.fooxer.studplaces.MainActivity.Storage.ELEMENTS
 import msc.fooxer.studplaces.MainActivity.Storage.FAVORITES
 
 class Favorites : AppCompatActivity() {

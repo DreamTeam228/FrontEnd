@@ -3,6 +3,7 @@ package msc.fooxer.studplaces
 import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
+import android.database.Cursor
 import android.net.ConnectivityManager
 import android.os.AsyncTask
 import android.support.v7.app.AppCompatActivity
@@ -24,7 +25,23 @@ class SplashScreen : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash_screen)
-        AsynkJson(this).execute()
+        MainActivity.dbh = DBHelper(this)
+        MainActivity.db = MainActivity.dbh.writableDatabase
+        fillingFromTable(FAV_TABLE_NAME)
+        if (!isNetworkAvailable(this)) {
+            Toast.makeText(this, "The connection is lost", Toast.LENGTH_LONG).show() //вывод сообщения о соединении с интернетом
+            fillingFromTable(CASH_TABLE_NAME)
+
+            Toast.makeText(this, "Cashe data is downloaded", Toast.LENGTH_LONG).show()
+            val i = Intent(baseContext, MainActivity::class.java)
+            i.putParcelableArrayListExtra("dp_ELEMENTS", dp)
+            startActivity(i)
+            finish()
+        } else
+            //Toast.makeText(this, "The connection is ok", Toast.LENGTH_LONG).show()
+
+            AsynkJson(this).execute()
+
     }
 
 
@@ -33,9 +50,7 @@ class SplashScreen : AppCompatActivity() {
         var json_url: String = ""
         override fun onPreExecute() {
             json_url = "http://trportal.ru/nekit/get_places.php"
-            if (!isNetworkAvailable(context)) {
-                Toast.makeText(context, "The connection is lost", Toast.LENGTH_LONG).show() //вывод сообщения о соединении с интернетом
-            } else Toast.makeText(context, "The connection is ok", Toast.LENGTH_LONG).show()
+
         }
 
         override fun doInBackground(vararg voids: Void): String {
@@ -92,7 +107,38 @@ class SplashScreen : AppCompatActivity() {
             startActivity(i)
             finish()
         }
+
     }
+    fun fillingFromTable(table: String) {
+        val cursor: Cursor = MainActivity.db.query(table,null,null,null,null,null,null)
+        if(cursor.moveToFirst()) {
+            val idIndex = cursor.getColumnIndex(KEY_INDEX)
+            val nameIndex = cursor.getColumnIndex(KEY_NAME)
+            val descIndex = cursor.getColumnIndex(KEY_DESCR)
+            val priceIndex = cursor.getColumnIndex(KEY_PRICE)
+            val phoneIndex = cursor.getColumnIndex(KEY_PHONE)
+            val addressIndex = cursor.getColumnIndex(KEY_ADDRESS)
+            val metroIndex = cursor.getColumnIndex(KEY_METRO)
+            val catIndex = cursor.getColumnIndex(KEY_CATEGORY)
+            val picIndex = cursor.getColumnIndex(KEY_PIC)
+            val favIndex = cursor.getColumnIndex(KEY_FAV)
+            if (table == FAV_TABLE_NAME) do {
+                val place = Place(cursor.getInt(idIndex), cursor.getString(nameIndex), cursor.getString(catIndex), cursor.getString(descIndex),
+                    cursor.getString(metroIndex),cursor.getString(phoneIndex),cursor.getInt(priceIndex), cursor.getString(addressIndex),
+                    cursor.getString(picIndex), true)
+                MainActivity.FAVORITES.add(place)
+                MainActivity.FAV_INDEXES.add(cursor.getInt(idIndex))
+            } while (cursor.moveToNext())
+            else do {
+                val place = Place(cursor.getInt(idIndex), cursor.getString(nameIndex), cursor.getString(catIndex), cursor.getString(descIndex),
+                    cursor.getString(metroIndex),cursor.getString(phoneIndex),cursor.getInt(priceIndex), cursor.getString(addressIndex),
+                    cursor.getString(picIndex), cursor.getInt(favIndex) == 1)
+                dp.add(place)
+            } while (cursor.moveToNext())
+        }
+        cursor.close()
+    }
+
 }
 
 private fun isNetworkAvailable(context: Context): Boolean {
@@ -100,3 +146,4 @@ private fun isNetworkAvailable(context: Context): Boolean {
     val networkInfo = connectivityManager.activeNetworkInfo
     return networkInfo != null && networkInfo.isConnectedOrConnecting
 }
+

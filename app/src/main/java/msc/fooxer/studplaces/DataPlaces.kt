@@ -17,7 +17,7 @@ import java.net.URL
 import java.util.ArrayList
 
 class DataPlaces {
-   // val place: Place = Place("","","","","","","","","")
+   // val address: Place = Place("","","","","","","","","")
     val places = ArrayList<Place>()
     var jsonobject: JSONObject = JSONObject()
     var jsonArray: JSONArray = JSONArray()
@@ -51,6 +51,7 @@ class DataPlaces {
                 picture = Jsonchik.getString("picture")
                 count++
                 val place = Place(id, name, category, description, metro, phoneNumbers, price, place1, picture)
+                place.isFavorite = place.id in MainActivity.FAV_INDEXES
                 places.add(place)
             }
         } catch (e: JSONException) {

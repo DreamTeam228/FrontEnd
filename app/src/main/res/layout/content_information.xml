@@ -40,7 +40,7 @@
                     android:text="Описание"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" android:id="@+id/descript_title" android:textSize="24sp"
-                    android:textColor="@color/colorPrimary"
+                    android:textColor="@color/colorPrimaryDark"
                     android:textStyle="bold"/>
             <TextView
                     android:text="Здесь будет информация о"
@@ -50,8 +50,24 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     android:textAlignment="viewStart" android:textSize="16sp"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/price" android:textColor="@color/colorPrimaryDark"
+                    app:layout_constraintTop_toBottomOf="@+id/price" android:textColor="@color/colorPrimary"
                     app:layout_constraintHorizontal_bias="0.494"/>
+            <TextView
+                    android:text="Адрес и телефон"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/ads_title" android:textColor="@color/colorPrimaryDark" android:textStyle="bold"
+                    android:textSize="24sp"/>
+            <TextView
+                    android:text="Адрес"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/address" android:textSize="16sp" android:textColor="@color/colorPrimary"/>
+            <TextView
+                    android:text="Телефон"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/phone" android:textSize="16sp" android:textColor="@color/colorPrimary"/>
         </LinearLayout>
     </ScrollView>
 </android.support.constraint.ConstraintLayout>

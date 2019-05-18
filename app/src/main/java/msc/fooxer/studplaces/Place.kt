@@ -11,7 +11,7 @@ class Place (
     val metro: String,
     val phoneNumbers: String,
     val price: Int,
-    val place: String, // Сюда нужен код для получения картинки и ее обработки BitMap
+    val address: String, // Сюда нужен код для получения картинки и ее обработки BitMap
     var picture: String,
     var isFavorite: Boolean = false
 ) : Parcelable{
@@ -43,7 +43,7 @@ class Place (
         parcel.writeString(metro)
         parcel.writeString(phoneNumbers)
         parcel.writeInt(price)
-        parcel.writeString(place)
+        parcel.writeString(address)
         parcel.writeString(picture)
         parcel.writeInt(if (isFavorite) 1 else 0)
     }

@@ -1,6 +1,8 @@
 package msc.fooxer.studplaces
 
+import android.content.ContentValues
 import android.content.Intent
+import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
@@ -8,6 +10,7 @@ import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import kotlinx.android.synthetic.main.activity_main.*
@@ -25,7 +28,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
 
         // Это глобальный массив объектов, отображающихся на экране
-
+        lateinit var dbh : DBHelper
+        lateinit var db : SQLiteDatabase
         var ELEMENTS:ArrayList<Place> = ArrayList()
         var FAVORITES: MutableList<Place> = ArrayList()
         var RANDOM_WEEK: MutableList<Place> = ArrayList()
@@ -42,6 +46,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             REMOVE_FLAG = if (place.isFavorite) {
                 FAVORITES.add(place)
                 FAV_INDEXES.add(place.id)
+                addToTable(FAV_TABLE_NAME,place)
                 false
             } else {
                 FAVORITES.remove (
@@ -50,10 +55,29 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     }
                 )
                 FAV_INDEXES.remove(place.id)
+                deleteFromTable(FAV_TABLE_NAME, place)
                 true
             }
 
 
+        }
+        fun addToTable (table: String, place: Place) {
+            val cv = ContentValues()
+            cv.put(KEY_INDEX, place.id)
+            cv.put(KEY_NAME, place.name)
+            cv.put(KEY_DESCR, place.description)
+            cv.put(KEY_CATEGORY, place.Сategory)
+            cv.put(KEY_METRO, place.metro)
+            cv.put(KEY_ADDRESS, place.address)
+            cv.put(KEY_PRICE, place.price)
+            cv.put(KEY_PHONE, place.phoneNumbers)
+            cv.put(KEY_PIC, place.picture)
+            cv.put(KEY_FAV, if(place.isFavorite) 1 else 0)
+            db.insert(table,null,cv)
+            Log.d("mLog", "New note was added into $table")
+        }
+        fun deleteFromTable (table: String, place:Place) {
+            db.delete(table, "$KEY_INDEX = ${place.id}", null)
         }
     }
 
@@ -61,9 +85,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        //setSupportActionBar(toolbar)
-        // val bar = supportActionBar
-        //setElements()
+
         ELEMENTS = intent.getParcelableArrayListExtra<Place>("dp_ELEMENTS")
         val recyclerView = findViewById <RecyclerView> (R.id.list)
         val adapter: CustomAdapter = CustomAdapter(this, ELEMENTS)
@@ -80,8 +102,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             val search = Intent(this, Search::class.java)
             startActivity(search)
         }
-
+         //наверняка нужно расположить это в другом месте
         nav_view.setNavigationItemSelectedListener(this)
+
     }
     // Сюда будут приходить разные линки(рандом или фулл или поиск)
 
@@ -92,8 +115,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             drawer_layout.closeDrawer(GravityCompat.START)
         } else {
             super.onBackPressed()
-            finish()
-            ELEMENTS.clear()
+
             //System.exit(0)
         }
     }
@@ -140,8 +162,23 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         drawer_layout.closeDrawer(GravityCompat.START)
         return true
     }
-    override fun onResume() {
-        super.onResume()
+
+    override fun onStop() {
+        createCaсhe(2)
+        super.onStop()
+    }
+
+    override fun onDestroy() {
+
+        ELEMENTS.clear()
+        super.onDestroy()
+    }
+
+
+    fun createCaсhe (size: Int) {
+        db.delete(CASH_TABLE_NAME,null,null)
+        for (i in 0..size) // размер кэша
+            addToTable(CASH_TABLE_NAME,ELEMENTS[i])
     }
 }
 
