@@ -19,8 +19,13 @@
                       android:orientation="vertical">
             <SearchView
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" android:id="@+id/search_line"
-                    android:contentDescription="Search" android:fadingEdge="horizontal"/>
+                    android:layout_height="wrap_content" android:id="@+id/searchLine"
+                    android:contentDescription="Search" android:fadingEdge="horizontal"
+                    android:maxLength="20"/>
+            <TextView
+                    android:text="TextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:id="@+id/textView"/>
             <Space
                     android:layout_width="match_parent"
                     android:layout_height="42dp"/>
@@ -57,9 +62,16 @@
                     style="@style/Widget.AppCompat.SeekBar.Discrete"
                     android:layout_width="240dp"
                     android:layout_height="wrap_content"
-                    android:max="10"
-                    android:progress="3"
+                    android:max="1000"
+                    android:progress="1000"
                     android:id="@+id/price_bar"/>
+            <EditText
+                    android:layout_width="64dp"
+                    android:layout_height="wrap_content"
+                    android:inputType="numberDecimal"
+                    android:ems="10"
+                    android:maxLength="6"
+                    android:id="@+id/priceValue"/>
             <Space
                     android:layout_width="match_parent"
                     android:layout_height="42dp"/>
