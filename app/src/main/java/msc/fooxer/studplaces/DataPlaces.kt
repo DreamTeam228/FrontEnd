@@ -39,6 +39,7 @@ class DataPlaces {
             var picture = ""
             // Присвоение полям объекта класса
             while (count < jsonArray.length()) {
+                places.clear()
                 val Jsonchik = jsonArray.getJSONObject(count)
                 id = Jsonchik.getInt("id")
                 name = Jsonchik.getString("name")
@@ -54,6 +55,7 @@ class DataPlaces {
                 place.isFavorite = place.id in MainActivity.FAV_INDEXES
                 places.add(place)
             }
+
         } catch (e: JSONException) {
             e.printStackTrace()
         }
