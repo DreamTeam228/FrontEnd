@@ -38,15 +38,16 @@ class DataPlaces {
             var place1 = ""
             var picture = ""
             // Присвоение полям объекта класса
+
+            places.clear()
             while (count < jsonArray.length()) {
-                places.clear()
                 val Jsonchik = jsonArray.getJSONObject(count)
                 id = Jsonchik.getInt("id")
                 name = Jsonchik.getString("name")
                 category = Jsonchik.getString("category")
                 description = Jsonchik.getString("description")
                 metro = Jsonchik.getString("metro")
-                phoneNumbers = ""
+                phoneNumbers = Jsonchik.getString("phoneNumbers")
                 place1 = Jsonchik.getString("place")
                 price = Jsonchik.getInt("price")
                 picture = Jsonchik.getString("picture")
