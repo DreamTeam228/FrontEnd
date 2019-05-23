@@ -11,7 +11,7 @@ var METRO: Array <SearchOption> = arrayOf(SearchOption("Сокольническ
     SearchOption("Бутовсская линия", R.color.Metro_Line12),SearchOption("МЦК", R.color.Metro_Line14), SearchOption("Большая кольцевая линия", R.color.Metro_Line15))
 //var LINE_1: Array <SearchOption> = arrayOf()
     val DB_NAME = "LOCAL_DATABASE"
-    var CURRENT_VER = 1
+    var CURRENT_VER = 2
     val FAV_TABLE_NAME = "FAVORITES"
     val CASH_TABLE_NAME = "CASH"
     val KEY_INDEX = "ID"
@@ -24,6 +24,9 @@ var METRO: Array <SearchOption> = arrayOf(SearchOption("Сокольническ
     val KEY_PRICE = "PRICE"
     val KEY_PIC = "PICTURE"
     val KEY_FAV = "FAV"
+    val KEY_DATE = "ADDED"
+    val KEY_URL = "URL"
+    val KEY_DISCOUNT = "DISCOUNT"
 
 
 

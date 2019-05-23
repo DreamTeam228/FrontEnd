@@ -1,5 +1,7 @@
 package msc.fooxer.studplaces
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity;
@@ -36,8 +38,14 @@ class Information : AppCompatActivity() {
             .error(R.drawable.samurai)
             .placeholder(R.color.Metro_Line9)
             .into(informationImage)
-        address.text = place.address
+        address.text = "Метро: ${place.metro}\n${place.address}"
         phone.text = place.phoneNumbers
+        phone.setOnClickListener{
+            val intent = Intent(Intent.ACTION_DIAL)
+            intent.data = Uri.parse("tel:${place.phoneNumbers}")
+            startActivity(intent)
+        }
+        category.text = place.Сategory
 
 
 

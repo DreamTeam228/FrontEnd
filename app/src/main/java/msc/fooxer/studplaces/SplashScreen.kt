@@ -19,7 +19,7 @@ import java.net.URL
 import java.util.ArrayList
 
 class SplashScreen : AppCompatActivity() {
-    var dp : ArrayList<Place> = ArrayList()
+    var dp: ArrayList<Place> = ArrayList()
 
     //var bp: Boolean = false
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,26 +27,19 @@ class SplashScreen : AppCompatActivity() {
         setContentView(R.layout.activity_splash_screen)
         MainActivity.dbh = DBHelper(this)
         MainActivity.db = MainActivity.dbh.writableDatabase
-        fillingFromTable(FAV_TABLE_NAME)
+        fillingFromTable()
         if (!isNetworkAvailable(this)) {
-            Toast.makeText(this, "The connection is lost", Toast.LENGTH_LONG).show() //вывод сообщения о соединении с интернетом
-            fillingFromTable(CASH_TABLE_NAME)
-
-            Toast.makeText(this, "Cashe data is downloaded", Toast.LENGTH_LONG).show()
-            val i = Intent(baseContext, MainActivity::class.java)
-            i.putParcelableArrayListExtra("dp_ELEMENTS", dp)
-            startActivity(i)
-            finish()
-        } else
-            //Toast.makeText(this, "The connection is ok", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, "The connection is lost", Toast.LENGTH_LONG)
+                .show() //вывод сообщения о соединении с интернетом
+           } else
+            Toast.makeText(this, "The connection is ok", Toast.LENGTH_LONG).show()
 
             AsynkJson(this).execute()
 
     }
 
 
-    inner class AsynkJson(private val context: Context): AsyncTask<Void, Void, String>()
-    {
+    inner class AsynkJson(private val context: Context) : AsyncTask<Void, Void, String>() {
         var json_url: String = ""
         override fun onPreExecute() {
             json_url = "http://trportal.ru/nekit/get_places.php"
@@ -99,51 +92,59 @@ class SplashScreen : AppCompatActivity() {
             } catch (e: Exception) {
                 Toast.makeText(context, print(e.message).toString(), Toast.LENGTH_LONG).show()
             }
-            if(dp.isNotEmpty())
+            if (dp.isNotEmpty()) {
                 Toast.makeText(context, "Data is downloaded", Toast.LENGTH_LONG).show() //ok
-
+                            } else {
+                Toast.makeText(context, "Your Favorites is downloaded", Toast.LENGTH_LONG).show() //ok
+            }
             val i = Intent(baseContext, MainActivity::class.java)
             i.putParcelableArrayListExtra("dp_ELEMENTS", dp)
             startActivity(i)
             finish()
-        }
 
-    }
-    fun fillingFromTable(table: String) {
-        val cursor: Cursor = MainActivity.db.query(table,null,null,null,null,null,null)
-        if(cursor.moveToFirst()) {
-            val idIndex = cursor.getColumnIndex(KEY_INDEX)
-            val nameIndex = cursor.getColumnIndex(KEY_NAME)
-            val descIndex = cursor.getColumnIndex(KEY_DESCR)
-            val priceIndex = cursor.getColumnIndex(KEY_PRICE)
-            val phoneIndex = cursor.getColumnIndex(KEY_PHONE)
-            val addressIndex = cursor.getColumnIndex(KEY_ADDRESS)
-            val metroIndex = cursor.getColumnIndex(KEY_METRO)
-            val catIndex = cursor.getColumnIndex(KEY_CATEGORY)
-            val picIndex = cursor.getColumnIndex(KEY_PIC)
-            val favIndex = cursor.getColumnIndex(KEY_FAV)
-            if (table == FAV_TABLE_NAME) do {
-                val place = Place(cursor.getInt(idIndex), cursor.getString(nameIndex), cursor.getString(catIndex), cursor.getString(descIndex),
-                    cursor.getString(metroIndex),cursor.getString(phoneIndex),cursor.getInt(priceIndex), cursor.getString(addressIndex),
-                    cursor.getString(picIndex), true)
-                MainActivity.FAVORITES.add(place)
-                MainActivity.FAV_INDEXES.add(cursor.getInt(idIndex))
-            } while (cursor.moveToNext())
-            else do {
-                val place = Place(cursor.getInt(idIndex), cursor.getString(nameIndex), cursor.getString(catIndex), cursor.getString(descIndex),
-                    cursor.getString(metroIndex),cursor.getString(phoneIndex),cursor.getInt(priceIndex), cursor.getString(addressIndex),
-                    cursor.getString(picIndex), cursor.getInt(favIndex) == 1)
-                dp.add(place)
-            } while (cursor.moveToNext())
         }
-        cursor.close()
     }
 
-}
+        fun fillingFromTable() {
 
-private fun isNetworkAvailable(context: Context): Boolean {
-    val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-    val networkInfo = connectivityManager.activeNetworkInfo
-    return networkInfo != null && networkInfo.isConnectedOrConnecting
-}
+                val cursor: Cursor = MainActivity.db.query(FAV_TABLE_NAME, null, null, null, null, null, "$KEY_DATE")
+                if (cursor.moveToFirst()) {
+                    val idIndex = cursor.getColumnIndex(KEY_INDEX)
+                    val nameIndex = cursor.getColumnIndex(KEY_NAME)
+                    val descIndex = cursor.getColumnIndex(KEY_DESCR)
+                    val priceIndex = cursor.getColumnIndex(KEY_PRICE)
+                    val phoneIndex = cursor.getColumnIndex(KEY_PHONE)
+                    val addressIndex = cursor.getColumnIndex(KEY_ADDRESS)
+                    val metroIndex = cursor.getColumnIndex(KEY_METRO)
+                    val catIndex = cursor.getColumnIndex(KEY_CATEGORY)
+                    val picIndex = cursor.getColumnIndex(KEY_PIC)
+                    do {
+                        val place = Place(
+                            cursor.getInt(idIndex),
+                            cursor.getString(nameIndex),
+                            cursor.getString(catIndex),
+                            cursor.getString(descIndex),
+                            cursor.getString(metroIndex),
+                            cursor.getString(phoneIndex),
+                            cursor.getInt(priceIndex),
+                            cursor.getString(addressIndex),
+                            cursor.getString(picIndex),
+                            true
+                        )
+                        MainActivity.FAVORITES.add(place)
+                        MainActivity.FAV_INDEXES.add(cursor.getInt(idIndex))
+                    } while (cursor.moveToNext())
+
+                    cursor.close()
+                }
+
+
+        }
+
+        private fun isNetworkAvailable(context: Context): Boolean {
+            val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+            val networkInfo = connectivityManager.activeNetworkInfo
+            return networkInfo != null && networkInfo.isConnectedOrConnecting
+        }
+    }
 

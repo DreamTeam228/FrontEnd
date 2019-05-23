@@ -16,7 +16,9 @@ import android.view.MenuItem
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.content_main.*
-import java.util.ArrayList
+import java.text.DateFormat
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -36,13 +38,19 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         var FAV_INDEXES: ArrayList<Int> = ArrayList()
         var REMOVE_FLAG: Boolean = false
         var pla: DataPlaces = DataPlaces()
-
+        //var dateFormat: DateFormat = SimpleDateFormat("EEE, dd.MM.yyyy, HH:mm:ss", Locale.getDefault())
         fun changeFav (place: Place) {
             REMOVE_FLAG = false
             place.isFavorite = !place.isFavorite
-            ELEMENTS.find {
+           //if (ELEMENTS.isNotEmpty())
+               ELEMENTS.find {
                 it.id == place.id
-            }!!.isFavorite = place.isFavorite
+            }?.isFavorite = place.isFavorite
+            if (RANDOM_WEEK.isNotEmpty()) {
+                RANDOM_WEEK.find{
+                    it.id == place.id
+                }?.isFavorite = place.isFavorite
+            }
             REMOVE_FLAG = if (place.isFavorite) {
                 FAVORITES.add(place)
                 FAV_INDEXES.add(place.id)
@@ -73,6 +81,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             cv.put(KEY_PHONE, place.phoneNumbers)
             cv.put(KEY_PIC, place.picture)
             cv.put(KEY_FAV, if(place.isFavorite) 1 else 0)
+            cv.put(KEY_DATE,Date().time)
             db.insert(table,null,cv)
             Log.d("mLog", "New note was added into $table")
         }
@@ -87,10 +96,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         setContentView(R.layout.activity_main)
 
         ELEMENTS = intent.getParcelableArrayListExtra<Place>("dp_ELEMENTS")
-        val recyclerView = findViewById <RecyclerView> (R.id.list)
-        val adapter: CustomAdapter = CustomAdapter(this, ELEMENTS)
-        recyclerView.adapter = adapter
-        recyclerView.layoutManager = LinearLayoutManager(this)
+
+            val recyclerView = findViewById<RecyclerView>(R.id.list)
+            val adapter: CustomAdapter = CustomAdapter(this, ELEMENTS)
+            recyclerView.adapter = adapter
+            recyclerView.layoutManager = LinearLayoutManager(this)
+
 
         val toggle = ActionBarDrawerToggle(
             this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close
@@ -164,7 +175,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     override fun onStop() {
-        createCaсhe(2)
+
         super.onStop()
     }
 
@@ -175,10 +186,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
 
-    fun createCaсhe (size: Int) {
-        db.delete(CASH_TABLE_NAME,null,null)
-        for (i in 0..size) // размер кэша
-            addToTable(CASH_TABLE_NAME,ELEMENTS[i])
-    }
+
 }
 

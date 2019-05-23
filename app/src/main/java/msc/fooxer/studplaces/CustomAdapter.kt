@@ -39,9 +39,10 @@ open class CustomAdapter internal constructor(context: Context, private val elem
         if (element.price == 0) {
             viewHolder.priceView.text = "Бесплатно"
         } else {
-            val str = " ${element.price} рублей"//context.getString(R.string.rubles)
+            val str = "${element.price} рублей"//context.getString(R.string.rubles)
             viewHolder.priceView.text = str
         }
+        viewHolder.categoryView.text = element.Сategory
 
     }
 
@@ -53,11 +54,13 @@ open class CustomAdapter internal constructor(context: Context, private val elem
         internal val imageView: ImageView
         internal val textView: TextView
         internal val priceView: TextView
+        internal val categoryView: TextView
 
         init {
             imageView = view.findViewById<View>(R.id.photo) as ImageView
             textView = view.findViewById<View>(R.id.description) as TextView
             priceView = view.findViewById<View>(R.id.price) as TextView
+            categoryView = view.findViewById<View>(R.id.category) as TextView
             view.setOnClickListener{
                 val info = Intent (it.context, Information::class.java)
                 info.putExtra("element", elements[adapterPosition])

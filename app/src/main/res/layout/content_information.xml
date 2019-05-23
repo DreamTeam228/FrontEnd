@@ -15,7 +15,7 @@
     <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent" tools:layout_editor_absoluteY="-50dp"
-            tools:layout_editor_absoluteX="-16dp">
+            tools:layout_editor_absoluteX="-16dp" android:id="@+id/scrollView2">
         <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="match_parent"
@@ -31,11 +31,17 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" android:id="@+id/name" android:textSize="24sp"
                     android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                    android:textColor="@color/colorPrimaryDark"/>
+            <TextView
+                    android:text="Категория"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:id="@+id/category" android:textStyle="italic"
                     android:textColor="@color/colorPrimary"/>
             <TextView
                     android:text="price"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" android:id="@+id/price" android:textSize="18sp"/>
+                    android:layout_height="wrap_content" android:id="@+id/price" android:textSize="18sp"
+                    android:textColor="@color/colorAccent" android:textStyle="bold"/>
             <TextView
                     android:text="Описание"
                     android:layout_width="match_parent"
@@ -67,7 +73,22 @@
                     android:text="Телефон"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/phone" android:textSize="16sp" android:textColor="@color/colorPrimary"/>
+                    android:id="@+id/phone" android:textSize="16sp" android:textColor="@color/colorAccent"
+                    android:linksClickable="true" android:textStyle="bold" android:clickable="true"
+                    android:drawableLeft="@drawable/call"/>
+            <TextView
+                    android:text="Cайт"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/url_title" android:textColor="@color/colorPrimaryDark" android:textStyle="bold"
+                    android:textSize="24sp"/>
+            <TextView
+                    android:text="URL"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/Url" android:textSize="16sp" android:textColor="@color/colorAccent"
+                    android:linksClickable="true" android:textStyle="bold" android:clickable="true"
+                    android:drawableLeft="@drawable/url"/>
         </LinearLayout>
     </ScrollView>
 </android.support.constraint.ConstraintLayout>
