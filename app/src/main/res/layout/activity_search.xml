@@ -17,18 +17,6 @@
     >
         <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
                       android:orientation="vertical">
-            <SearchView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" android:id="@+id/searchLine"
-                    android:contentDescription="Search" android:fadingEdge="horizontal"
-                    android:maxLength="20"/>
-            <TextView
-                    android:text="TextView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" android:id="@+id/textView"/>
-            <Space
-                    android:layout_width="match_parent"
-                    android:layout_height="42dp"/>
             <TextView
                     android:text="Категории"
                     android:layout_width="match_parent"

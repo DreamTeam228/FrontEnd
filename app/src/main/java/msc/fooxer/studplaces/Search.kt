@@ -4,17 +4,8 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.SearchView
-import android.util.Log
 import android.widget.SeekBar
-import io.reactivex.Observable
-import io.reactivex.ObservableOnSubscribe
-import io.reactivex.Observer
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.Disposable
-import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_search.*
-import java.util.concurrent.TimeUnit
 import android.text.Editable
 import android.text.TextWatcher
 
@@ -35,33 +26,6 @@ class Search : AppCompatActivity() {
         adapter_metro.notifyDataSetChanged()
         metro_recycler.adapter = adapter_metro
         metro_recycler.layoutManager = LinearLayoutManager(this)
-
-
-        // Здесь выполняется обработка строки введённой в сёрчЛайн с RxJava2
-        Observable.create(ObservableOnSubscribe<String> { subscriber ->
-            searchLine.setOnQueryTextListener(object : android.widget.SearchView.OnQueryTextListener {
-                override fun onQueryTextChange(newText: String?): Boolean {
-                    subscriber.onNext(newText!!)
-                    return false
-                }
-
-                override fun onQueryTextSubmit(query: String?): Boolean {
-                    subscriber.onNext(query!!)
-                    return false
-                }
-            })
-        })
-            .map { text -> text/*.toLowerCase()*/.trim() }
-            .debounce(300, TimeUnit.MILLISECONDS)
-            .distinct()
-            .filter { text -> text.isNotBlank() }
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe { text ->
-                Log.d("SEARCH LINE REQUEST", "subscriber: $text")
-                textView.text = text
-            }
-
 
 
         price_bar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {

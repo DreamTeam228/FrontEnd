@@ -12,7 +12,7 @@ import android.widget.*
 import com.squareup.picasso.Picasso
 
 
-open class CustomAdapter internal constructor(context: Context, private val elements: List<Place>) :
+open class CustomAdapter internal constructor(context: Context, private var elements: List<Place>) :
     RecyclerView.Adapter<CustomAdapter.ViewHolder>() {
 
     private val inflater: LayoutInflater
@@ -68,6 +68,11 @@ open class CustomAdapter internal constructor(context: Context, private val elem
             }
         }
 
+    }
+
+    fun setData(elements: List<Place>) {
+        this.elements = elements
+        notifyDataSetChanged()
     }
 }
 

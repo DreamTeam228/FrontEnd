@@ -1,29 +1,35 @@
 package msc.fooxer.studplaces
 
+import android.annotation.SuppressLint
 import android.content.ContentValues
 import android.content.Intent
 import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
+import android.support.v4.view.MenuItemCompat.getActionView
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.support.v7.widget.SearchView
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.content_main.*
-import java.text.DateFormat
-import java.text.SimpleDateFormat
 import java.util.*
+import io.reactivex.Observable
+import io.reactivex.ObservableOnSubscribe
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
+import java.util.concurrent.TimeUnit
+import kotlin.collections.ArrayList
 
+lateinit var adapter : CustomAdapter
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
-
-
 
     companion object Storage { // Массивы Констант (метро, категории) - в файле Constants
         // Здесь начинается эмулятор базы данных
@@ -90,19 +96,19 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
     }
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         ELEMENTS = intent.getParcelableArrayListExtra<Place>("dp_ELEMENTS")
 
-            val recyclerView = findViewById<RecyclerView>(R.id.list)
-            val adapter: CustomAdapter = CustomAdapter(this, ELEMENTS)
-            recyclerView.adapter = adapter
-            recyclerView.layoutManager = LinearLayoutManager(this)
+        val recyclerView = findViewById<RecyclerView>(R.id.list)
+        adapter = CustomAdapter(this, ELEMENTS)
+        //adapter.notifyDataSetChanged()
+        recyclerView.adapter = adapter
+        recyclerView.layoutManager = LinearLayoutManager(this)
 
-
+        setSupportActionBar(toolbar)
         val toggle = ActionBarDrawerToggle(
             this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close
         )
@@ -131,9 +137,48 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
     }
 
+    @SuppressLint("CheckResult")
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.main, menu)
+        val searchItem = menu.findItem(R.id.app_bar_search)
+        val searchLine = getActionView(searchItem) as SearchView
+
+        Observable.create(ObservableOnSubscribe<String> { subscriber ->
+            searchLine.setOnQueryTextListener(object : android.widget.SearchView.OnQueryTextListener,
+                SearchView.OnQueryTextListener {
+                override fun onQueryTextChange(newText: String): Boolean {
+                    subscriber.onNext(newText)
+                    return false
+                }
+
+                override fun onQueryTextSubmit(query: String): Boolean {
+                    subscriber.onNext(query)
+                    return false
+                }
+            })
+        })
+            .map { text -> text.toLowerCase().trim() }
+            .debounce(750, TimeUnit.MILLISECONDS)
+            //.distinct()
+            //.filter { text -> text.isNotBlank() }
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { text ->
+                Log.d("SEARCH LINE REQUEST", "subscriber: $text")
+                RANDOM_WEEK.clear()
+                for (i in 0 until ELEMENTS.size) {
+                    if(text in ELEMENTS[i].name.toLowerCase()) {
+                        RANDOM_WEEK.add(ELEMENTS[i])
+                        Log.d("ADDED ELEMENT IS", "$i")
+                        adapter.setData(RANDOM_WEEK)
+                    }
+                }
+                if(text.isNullOrBlank()) {
+                    adapter.setData(ELEMENTS)
+                }
+            }
+
         return true
     }
 
@@ -142,9 +187,17 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         when (item.itemId) {
-            R.id.app_bar_search -> return true
+            R.id.app_bar_search -> {
+                //startActivity(Intent(this, Random::class.java))
+                return true}
+            R.id.filter -> {
+                val filter = Intent(this, Search::class.java)
+                startActivity(filter)
+                return true
+            }
             else -> return super.onOptionsItemSelected(item)
         }
+
 
     }
 
@@ -184,8 +237,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         ELEMENTS.clear()
         super.onDestroy()
     }
-
-
 
 }
 

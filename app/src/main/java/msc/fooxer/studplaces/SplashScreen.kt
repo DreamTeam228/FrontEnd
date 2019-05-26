@@ -27,7 +27,7 @@ class SplashScreen : AppCompatActivity() {
         setContentView(R.layout.activity_splash_screen)
         MainActivity.dbh = DBHelper(this)
         MainActivity.db = MainActivity.dbh.writableDatabase
-        fillingFromTable()
+        if (MainActivity.FAVORITES.isNullOrEmpty()) fillingFromTable()
         if (!isNetworkAvailable(this)) {
             Toast.makeText(this, "The connection is lost", Toast.LENGTH_LONG)
                 .show() //вывод сообщения о соединении с интернетом
