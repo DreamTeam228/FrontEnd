@@ -16,20 +16,36 @@ import android.support.v7.widget.SearchView
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import android.widget.ProgressBar
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.content_main.*
 import java.util.*
 import io.reactivex.Observable
 import io.reactivex.ObservableOnSubscribe
+import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.processors.PublishProcessor
 import io.reactivex.schedulers.Schedulers
 import java.util.concurrent.TimeUnit
 import kotlin.collections.ArrayList
 
 lateinit var adapter : CustomAdapter
+lateinit var recyclerView : RecyclerView
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+
+    private val compositeDisposable = CompositeDisposable()
+    private val paginator = PublishProcessor.create<Int>()
+    private var layoutManager: LinearLayoutManager = LinearLayoutManager(this)
+    private var loading = true
+    private var isSearchActive = false
+    private var pageNumber = 1
+    private val VISIBLE_THRESHOLD = 1
+    private var lastVisibleItem: Int = 0
+    private var totalItemCount:Int = 0
 
     companion object Storage { // Массивы Констант (метро, категории) - в файле Constants
         // Здесь начинается эмулятор базы данных
@@ -102,11 +118,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         ELEMENTS = intent.getParcelableArrayListExtra<Place>("dp_ELEMENTS")
 
-        val recyclerView = findViewById<RecyclerView>(R.id.list)
+        recyclerView = findViewById<RecyclerView>(R.id.list)
         adapter = CustomAdapter(this, ELEMENTS)
         //adapter.notifyDataSetChanged()
         recyclerView.adapter = adapter
-        recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView.layoutManager = layoutManager
 
         setSupportActionBar(toolbar)
         val toggle = ActionBarDrawerToggle(
@@ -122,6 +138,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
          //наверняка нужно расположить это в другом месте
         nav_view.setNavigationItemSelectedListener(this)
 
+        setUpLoadMoreListener()     // Это скроллЛистенер для ресайклера
+        subscribeForData()          // Это подгрузка данных
     }
     // Сюда будут приходить разные линки(рандом или фулл или поиск)
 
@@ -167,16 +185,24 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             .subscribe { text ->
                 Log.d("SEARCH LINE REQUEST", "subscriber: $text")
                 RANDOM_WEEK.clear()
+                isSearchActive = true
+                Log.d("SEARCH LINE", "RECYCLER IS ACTIVE?: ${!isSearchActive}")
+                var showEmptyFlag = false
                 for (i in 0 until ELEMENTS.size) {
                     if(text in ELEMENTS[i].name.toLowerCase()) {
                         RANDOM_WEEK.add(ELEMENTS[i])
-                        Log.d("ADDED ELEMENT IS", "$i")
                         adapter.setData(RANDOM_WEEK)
+                        showEmptyFlag = true
                     }
                 }
-                if(text.isNullOrBlank()) {
+                if(!showEmptyFlag) adapter.setData(RANDOM_WEEK)
+                else if(text.isNullOrBlank()) {
                     adapter.setData(ELEMENTS)
+                    isSearchActive = false
+                    Log.d("SEARCH LINE", "RECYCLER IS ACTIVE?: ${!isSearchActive}")
+
                 }
+
             }
 
         return true
@@ -227,16 +253,77 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         return true
     }
 
-    override fun onStop() {
-
-        super.onStop()
-    }
-
     override fun onDestroy() {
 
         ELEMENTS.clear()
         super.onDestroy()
     }
 
+    /*
+    * Тут скроллЛисенер для ресайклера,
+    * который сообщает, что мы посмотрели все элементы
+    * и пора грузить новые
+    */
+    private fun setUpLoadMoreListener() {
+        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(
+                recyclerView: RecyclerView,
+                dx: Int, dy: Int
+            ) {
+                super.onScrolled(recyclerView, dx, dy)
+                totalItemCount = layoutManager.itemCount
+                lastVisibleItem = layoutManager.findLastVisibleItemPosition()
+                if (!isSearchActive
+                    && !loading
+                    && totalItemCount <= lastVisibleItem + VISIBLE_THRESHOLD) {    // Выясняем, что пора подгрузить очередные данные
+                    pageNumber++
+                    paginator.onNext(pageNumber)                                            // В этом месте запускается сама загрузка данных
+                    loading = true
+                }
+            }
+        })
+    }
+
+    // Запускаем загрузку данных, прогрессБар, управляем потоками при загрузке
+    private fun subscribeForData() {
+        val disposable = paginator
+            .onBackpressureDrop()
+            .doOnNext { page ->
+                loading = true
+                progressBarMainActivity.visibility = View.VISIBLE
+            }
+            .concatMapSingle<ArrayList<Place>> { page ->
+                dataFromNetwork(page)
+                    .subscribeOn(Schedulers.io())
+                    .doOnError { throwable ->
+                        Log.e("ERROR", "$throwable.stackTrace")
+                    }
+            }
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { items ->
+                adapter?.setData(items)
+                loading = false
+                progressBarMainActivity.visibility = View.INVISIBLE
+            }
+
+        compositeDisposable.add(disposable)
+
+        paginator.onNext(pageNumber)
+    }
+
+    // Получение очередных данных с сервака
+    private fun dataFromNetwork(page: Int): Single<ArrayList<Place>> {
+        return Single.just(true)
+            .delay(1, TimeUnit.SECONDS)
+            .map { value ->
+                //val items = java.util.ArrayList<Place>()
+                ELEMENTS.add(ELEMENTS[page])
+                // У нас здесь будет подгрузка с сервака
+                /*for (i in 1..10) {
+                    items.add("Item " + (page * 10 + i))
+                }*/
+                ELEMENTS
+            }
+    }
 }
 

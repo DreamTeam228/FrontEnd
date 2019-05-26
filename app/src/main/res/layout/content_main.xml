@@ -28,4 +28,14 @@
             tools:listitem="@layout/element"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>
+    <ProgressBar
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/progressBarMainActivity"
+            app:layout_constraintBottom_toBottomOf="parent" android:layout_marginBottom="8dp"
+            app:layout_constraintEnd_toEndOf="@+id/list" app:layout_constraintStart_toStartOf="@+id/list"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toTopOf="@+id/list" app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintVertical_bias="0.985" android:visibility="invisible"/>
 </android.support.constraint.ConstraintLayout>
