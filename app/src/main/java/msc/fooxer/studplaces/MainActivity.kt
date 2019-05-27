@@ -259,11 +259,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         super.onDestroy()
     }
 
-    /*
-    * Тут скроллЛисенер для ресайклера,
-    * который сообщает, что мы посмотрели все элементы
-    * и пора грузить новые
-    */
+    /**
+     * Тут скроллЛисенер для ресайклера,
+     * который сообщает, что мы посмотрели все элементы
+     * и пора грузить новые
+     */
     private fun setUpLoadMoreListener() {
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(
@@ -301,7 +301,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { items ->
-                adapter?.setData(items)
+                adapter.setData(items)
                 loading = false
                 progressBarMainActivity.visibility = View.INVISIBLE
             }
@@ -317,8 +317,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             .delay(1, TimeUnit.SECONDS)
             .map { value ->
                 //val items = java.util.ArrayList<Place>()
-                ELEMENTS.add(ELEMENTS[page])
+                ELEMENTS.add(ELEMENTS[0])
+                ELEMENTS.removeAt(0)
                 // У нас здесь будет подгрузка с сервака
+                // Типо ELEMENTS.add(getDataFromDB())
+
                 /*for (i in 1..10) {
                     items.add("Item " + (page * 10 + i))
                 }*/

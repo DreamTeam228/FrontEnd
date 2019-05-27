@@ -27,6 +27,15 @@ class Search : AppCompatActivity() {
         metro_recycler.adapter = adapter_metro
         metro_recycler.layoutManager = LinearLayoutManager(this)
 
+        find_button.setOnClickListener{
+            // здесь грабим всю инфу из полей активити
+            // и как-то пихаем её в джсон
+            // и ещё отправляем её на сервак
+            // получаем в ответ джсон, распаковываем его в массив
+            // и запускаем новое активити, отфильтрованное
+
+            // можно попробовать сделать через Рандом_АсинкТаск, заменив там ссылку и интент
+        }
 
         price_bar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {}
@@ -38,10 +47,10 @@ class Search : AppCompatActivity() {
             }
         })
 
-        priceValue.setText("1000")
+        priceValue.setText(R.string.max_price)
         priceValue.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable) {
-                if (!s.toString().contains('.') && !s.isBlank()) {
+                if (!s.toString().contains('.') && s.isNotBlank()) {
                     when (val value = Integer.parseInt(s.toString())) {
                         in 1..1000 -> price_bar.progress = value
                         in 1000..Int.MAX_VALUE -> price_bar.progress = 1000
