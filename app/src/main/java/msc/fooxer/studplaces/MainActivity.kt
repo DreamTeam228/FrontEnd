@@ -73,11 +73,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     it.id == place.id
                 }?.isFavorite = place.isFavorite
             }
-            REMOVE_FLAG = if (place.isFavorite) {
-                FAVORITES.add(place)
+           if (place.isFavorite) {
+                FAVORITES.add(0,place)
                 FAV_INDEXES.add(place.id)
                 addToTable(FAV_TABLE_NAME,place)
-                false
+
             } else {
                 FAVORITES.remove (
                     FAVORITES.find {
@@ -86,7 +86,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 )
                 FAV_INDEXES.remove(place.id)
                 deleteFromTable(FAV_TABLE_NAME, place)
-                true
+
             }
 
 
@@ -188,19 +188,21 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 isSearchActive = true
                 Log.d("SEARCH LINE", "RECYCLER IS ACTIVE?: ${!isSearchActive}")
                 var showEmptyFlag = false
-                for (i in 0 until ELEMENTS.size) {
-                    if(text in ELEMENTS[i].name.toLowerCase()) {
-                        RANDOM_WEEK.add(ELEMENTS[i])
-                        adapter.setData(RANDOM_WEEK)
-                        showEmptyFlag = true
+                if (ELEMENTS.isNotEmpty()) {
+                    for (i in 0 until ELEMENTS.size) {
+                        if (text in ELEMENTS[i].name.toLowerCase()) {
+                            RANDOM_WEEK.add(ELEMENTS[i])
+                            adapter.setData(RANDOM_WEEK)
+                            showEmptyFlag = true
+                        }
                     }
-                }
-                if(!showEmptyFlag) adapter.setData(RANDOM_WEEK)
-                else if(text.isNullOrBlank()) {
-                    adapter.setData(ELEMENTS)
-                    isSearchActive = false
-                    Log.d("SEARCH LINE", "RECYCLER IS ACTIVE?: ${!isSearchActive}")
+                    if (!showEmptyFlag) adapter.setData(RANDOM_WEEK)
+                    else if (text.isNullOrBlank()) {
+                        adapter.setData(ELEMENTS)
+                        isSearchActive = false
+                        Log.d("SEARCH LINE", "RECYCLER IS ACTIVE?: ${!isSearchActive}")
 
+                    }
                 }
 
             }
@@ -316,17 +318,20 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         return Single.just(true)
             .delay(1, TimeUnit.SECONDS)
             .map { value ->
-                //val items = java.util.ArrayList<Place>()
-                ELEMENTS.add(ELEMENTS[0])
-                ELEMENTS.removeAt(0)
-                // У нас здесь будет подгрузка с сервака
-                // Типо ELEMENTS.add(getDataFromDB())
+                if (ELEMENTS.isNotEmpty()) {
+                    //val items = java.util.ArrayList<Place>()
+                    ELEMENTS.add(ELEMENTS[0])
+                    ELEMENTS.removeAt(0)
+                    // У нас здесь будет подгрузка с сервака
+                    // Типо ELEMENTS.add(getDataFromDB())
 
-                /*for (i in 1..10) {
+                    /*for (i in 1..10) {
                     items.add("Item " + (page * 10 + i))
                 }*/
+                }
                 ELEMENTS
             }
     }
-}
+        }
+//}
 

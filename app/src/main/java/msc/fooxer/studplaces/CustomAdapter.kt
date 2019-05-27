@@ -29,7 +29,6 @@ open class CustomAdapter internal constructor(context: Context, private var elem
     override fun onBindViewHolder(viewHolder: ViewHolder, i: Int) {
         Log.d("VIEWHOLDER_POSITION", "POSITION IS $i")
         val element = elements[i]
-        //viewHolder.imageView.setImageResource(R.drawable.samurai) // по урл
         Picasso.get()
             .load(element.picture)
             .error(R.drawable.samurai)
@@ -37,7 +36,7 @@ open class CustomAdapter internal constructor(context: Context, private var elem
             .into(viewHolder.imageView)
         viewHolder.textView.text = element.name
         if (element.price == 0) {
-            viewHolder.priceView.text = "Бесплатно"
+            viewHolder.priceView.text = "Бесплатно" // добавим проверку на скидку
         } else {
             val str = "${element.price} рублей"//context.getString(R.string.rubles)
             viewHolder.priceView.text = str

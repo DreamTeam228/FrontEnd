@@ -20,7 +20,7 @@
                 android:background="@color/colorPrimary"
                 app:popupTheme="@style/AppTheme.PopupOverlay"
                 android:foregroundGravity="clip_horizontal|center|clip_vertical"
-        />
+                app:logo="@drawable/studak"/>
 
     </android.support.design.widget.AppBarLayout>
 

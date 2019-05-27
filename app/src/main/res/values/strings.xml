@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ПОСЛЕПАР</string>
+    <string name="app_name">СТУДАК</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Android Studio</string>
@@ -17,6 +17,10 @@
     <string name="free">Бесплатно</string>
     <string name="max_price">1000</string>
     <string name="search">Поиск</string>
+    <string name="connection_ok">Соединение установлено</string>
+    <string name="connection_lost">Соединение потеряно</string>
+    <string name="fav_cache">Загружено Ваше Избранное</string>
+    <string name="json_link">http://trportal.ru/nekit/get_places.php</string>
 
     <string-array name="titles">
         <item>Зоопарк</item>

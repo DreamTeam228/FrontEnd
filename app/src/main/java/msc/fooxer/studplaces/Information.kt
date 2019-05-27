@@ -19,9 +19,7 @@ import msc.fooxer.studplaces.MainActivity.Storage.RANDOM_WEEK
 import msc.fooxer.studplaces.MainActivity.Storage.changeFav
 
 class Information : AppCompatActivity() {
-    companion object {
 
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

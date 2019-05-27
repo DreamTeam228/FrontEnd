@@ -17,7 +17,6 @@ import java.net.URL
 import java.util.ArrayList
 
 class DataPlaces {
-   // val address: Place = Place("","","","","","","","","")
     val places = ArrayList<Place>()
     var jsonobject: JSONObject = JSONObject()
     var jsonArray: JSONArray = JSONArray()

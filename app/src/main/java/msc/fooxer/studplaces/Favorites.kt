@@ -8,16 +8,16 @@ import android.support.v7.widget.RecyclerView
 import msc.fooxer.studplaces.MainActivity.Storage.FAVORITES
 
 class Favorites : AppCompatActivity() {
-
+    lateinit var recyclerView: RecyclerView
+    lateinit var adapter: CustomAdapter
     // заполнение и очистка favorites производится при нажатии на кнопку в Information
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_favorites)
         //setSupportActionBar(toolbar)
-        val recyclerView = findViewById <RecyclerView> (R.id.list)
-        val adapter: CustomAdapter = CustomAdapter(this, FAVORITES)
-        //adapter.notifyDataSetChanged()        //true, если данные изменились
+         recyclerView = findViewById <RecyclerView> (R.id.list)
+         adapter = CustomAdapter(this, FAVORITES)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
         val bar = supportActionBar
@@ -26,11 +26,14 @@ class Favorites : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        if (MainActivity.REMOVE_FLAG) {
+        adapter.notifyDataSetChanged()
+
+       /* if (MainActivity.REMOVE_FLAG) {
             finish()
             startActivity(Intent( this, this.javaClass))
             MainActivity.REMOVE_FLAG = !MainActivity.REMOVE_FLAG
-        }
+        }*/
+
     }
 
     override fun onBackPressed() {

@@ -3,6 +3,7 @@ package msc.fooxer.studplaces
 import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
+import android.content.res.Resources
 import android.database.Cursor
 import android.net.ConnectivityManager
 import android.os.AsyncTask
@@ -21,18 +22,17 @@ import java.util.ArrayList
 class SplashScreen : AppCompatActivity() {
     var dp: ArrayList<Place> = ArrayList()
 
-    //var bp: Boolean = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_splash_screen)
+        //setContentView(R.layout.activity_splash_screen)
         MainActivity.dbh = DBHelper(this)
         MainActivity.db = MainActivity.dbh.writableDatabase
         if (MainActivity.FAVORITES.isNullOrEmpty()) fillingFromTable()
         if (!isNetworkAvailable(this)) {
-            Toast.makeText(this, "The connection is lost", Toast.LENGTH_LONG)
+            Toast.makeText(this, getText(R.string.connection_lost), Toast.LENGTH_LONG)
                 .show() //вывод сообщения о соединении с интернетом
            } else
-            Toast.makeText(this, "The connection is ok", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, getText(R.string.connection_ok), Toast.LENGTH_LONG).show()
 
             AsynkJson(this).execute()
 
@@ -40,10 +40,9 @@ class SplashScreen : AppCompatActivity() {
 
 
     inner class AsynkJson(private val context: Context) : AsyncTask<Void, Void, String>() {
-        var json_url: String = ""
+        lateinit var json_url: String
         override fun onPreExecute() {
-            json_url = "http://trportal.ru/nekit/get_places.php"
-
+            json_url = getText(R.string.json_link).toString()
         }
 
         override fun doInBackground(vararg voids: Void): String {
@@ -93,9 +92,9 @@ class SplashScreen : AppCompatActivity() {
                 Toast.makeText(context, print(e.message).toString(), Toast.LENGTH_LONG).show()
             }
             if (dp.isNotEmpty()) {
-                Toast.makeText(context, "Data is downloaded", Toast.LENGTH_LONG).show() //ok
+                //Toast.makeText(context, "Data is downloaded", Toast.LENGTH_LONG).show() //ok
                             } else {
-                Toast.makeText(context, "Your Favorites is downloaded", Toast.LENGTH_LONG).show() //ok
+                Toast.makeText(context, getText(R.string.fav_cache), Toast.LENGTH_LONG).show() //ok
             }
             val i = Intent(baseContext, MainActivity::class.java)
             i.putParcelableArrayListExtra("dp_ELEMENTS", dp)
@@ -107,7 +106,7 @@ class SplashScreen : AppCompatActivity() {
 
         fun fillingFromTable() {
 
-                val cursor: Cursor = MainActivity.db.query(FAV_TABLE_NAME, null, null, null, null, null, "$KEY_DATE")
+                val cursor: Cursor = MainActivity.db.query(FAV_TABLE_NAME, null, null, null, null, null, "$KEY_DATE DESC")
                 if (cursor.moveToFirst()) {
                     val idIndex = cursor.getColumnIndex(KEY_INDEX)
                     val nameIndex = cursor.getColumnIndex(KEY_NAME)
