@@ -86,7 +86,7 @@
                     android:text="URL"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/Url" android:textSize="16sp" android:textColor="@color/colorAccent"
+                    android:id="@+id/url_clickable" android:textSize="16sp" android:textColor="@color/colorAccent"
                     android:linksClickable="true" android:textStyle="bold" android:clickable="true"
                     android:drawableLeft="@drawable/url"/>
         </LinearLayout>

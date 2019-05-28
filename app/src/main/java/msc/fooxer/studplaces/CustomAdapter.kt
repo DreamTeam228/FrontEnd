@@ -36,12 +36,16 @@ open class CustomAdapter internal constructor(context: Context, private var elem
             .into(viewHolder.imageView)
         viewHolder.textView.text = element.name
         if (element.price == 0) {
-            viewHolder.priceView.text = "Бесплатно" // добавим проверку на скидку
+            if (element.discount == 0)
+                viewHolder.priceView.text = "Бесплатно"
+            else
+                viewHolder.priceView.text = "Скидка ${element.discount}%"
+
         } else {
-            val str = "${element.price} рублей"//context.getString(R.string.rubles)
+            val str = "${element.price} рублей"
             viewHolder.priceView.text = str
         }
-        viewHolder.categoryView.text = element.Сategory
+        viewHolder.categoryView.text = element.category
 
     }
 

@@ -22,6 +22,7 @@
     <string name="fav_cache">Загружено Ваше Избранное</string>
     <string name="json_link">http://trportal.ru/nekit/get_places.php</string>
     <string name="json">http://trportal.ru/nekit/</string>
+    <string name="chooser">Открыть с помощью</string>
     <string name="metro_link">https://api.hh.ru/metro/1</string>
 
 </resources>

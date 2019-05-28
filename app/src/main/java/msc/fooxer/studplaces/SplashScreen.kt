@@ -34,7 +34,6 @@ class SplashScreen : AppCompatActivity() {
     @SuppressLint("CheckResult")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //setContentView(R.layout.activity_splash_screen)
         MainActivity.dbh = DBHelper(this)
         MainActivity.db = MainActivity.dbh.writableDatabase
         if (MainActivity.FAVORITES.isNullOrEmpty()) fillingFromTable()
@@ -142,7 +141,7 @@ class SplashScreen : AppCompatActivity() {
         }
     }
 
-        fun fillingFromTable() {
+       fun fillingFromTable() {
 
                 val cursor: Cursor = MainActivity.db.query(FAV_TABLE_NAME, null, null, null, null, null, "$KEY_DATE DESC")
                 if (cursor.moveToFirst()) {
@@ -155,6 +154,8 @@ class SplashScreen : AppCompatActivity() {
                     val metroIndex = cursor.getColumnIndex(KEY_METRO)
                     val catIndex = cursor.getColumnIndex(KEY_CATEGORY)
                     val picIndex = cursor.getColumnIndex(KEY_PIC)
+                    val discIndex = cursor.getColumnIndex(KEY_DISCOUNT)
+                    val urlIndex = cursor.getColumnIndex(KEY_URL)
                     do {
                         val place = Place(
                             cursor.getInt(idIndex),
@@ -166,6 +167,8 @@ class SplashScreen : AppCompatActivity() {
                             cursor.getInt(priceIndex),
                             cursor.getString(addressIndex),
                             cursor.getString(picIndex),
+                            cursor.getInt(discIndex),
+                            cursor.getString(urlIndex),
                             true
                         )
                         MainActivity.FAVORITES.add(place)

@@ -6,14 +6,17 @@ import android.os.Parcelable
 class Place (
     val id: Int,
     val name: String,
-    val Сategory: String,
+    val category: String,
     val description: String,
     val metro: String,
     val phoneNumbers: String,
     val price: Int,
     val address: String, // Сюда нужен код для получения картинки и ее обработки BitMap
     var picture: String,
+    val discount: Int,
+    var url: String,
     var isFavorite: Boolean = false
+
 ) : Parcelable{
     constructor(parcel: Parcel) : this(
         parcel.readInt(),
@@ -24,6 +27,8 @@ class Place (
         parcel.readString(),
         parcel.readInt(),
         parcel.readString(),
+        parcel.readString(),
+        parcel.readInt(),
         parcel.readString(),
         parcel.readInt() != 0
     )
@@ -38,13 +43,15 @@ class Place (
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeInt(id)
         parcel.writeString(name)
-        parcel.writeString(Сategory)
+        parcel.writeString(category)
         parcel.writeString(description)
         parcel.writeString(metro)
         parcel.writeString(phoneNumbers)
         parcel.writeInt(price)
         parcel.writeString(address)
         parcel.writeString(picture)
+        parcel.writeInt(discount)
+        parcel.writeString(url)
         parcel.writeInt(if (isFavorite) 1 else 0)
     }
 

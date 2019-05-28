@@ -36,6 +36,8 @@ class DataPlaces {
             var price : Int
             var place1 = ""
             var picture = ""
+            var discount : Int
+            var url = ""
             // Присвоение полям объекта класса
 
             places.clear()
@@ -50,8 +52,12 @@ class DataPlaces {
                 place1 = Jsonchik.getString("place")
                 price = Jsonchik.getInt("price")
                 picture = Jsonchik.getString("picture")
+                discount = Jsonchik.getInt("discount")
+                url = Jsonchik.getString("url")
                 count++
-                val place = Place(id, name, category, description, metro, phoneNumbers, price, place1, picture)
+                if (!url.startsWith("http://") && !url.startsWith("https://"))
+                    url= "http://$url"
+                val place = Place(id, name, category, description, metro, phoneNumbers, price, place1, picture, discount, url)
                 place.isFavorite = place.id in MainActivity.FAV_INDEXES
                 places.add(place)
             }
