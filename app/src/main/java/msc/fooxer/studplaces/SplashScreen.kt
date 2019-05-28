@@ -46,7 +46,7 @@ class SplashScreen : AppCompatActivity() {
 
             AsynkJson(this).execute()
 
-        /*val retrofit = Retrofit.Builder()
+        val retrofit = Retrofit.Builder()
             .baseUrl("https://api.hh.ru/metro/")
             .addConverterFactory(GsonConverterFactory.create())
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
@@ -57,16 +57,21 @@ class SplashScreen : AppCompatActivity() {
         messagesApi.getStations()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            /*.subscribe(object : DisposableSingleObserver<ArrayList<Line>>() {
-                override fun onSuccess(messages: ArrayList<Line>) {
-                    Log.d("onSuccess ", "${messages.size}")
+            .subscribe(object : DisposableSingleObserver<Array<Lines>>() {
+                override fun onSuccess(lines: Array<Lines>) {
+                    Log.d("onSuccess ", "${lines.size}")
+                    for (i in 0 until lines.size) {
+                        for(j in 0 until lines[i].stations.size) {
+                            Log.d("STATION NAME", lines[i].stations[j].name)
+                        }
+                    }
                 }
 
                 override fun onError(e: Throwable) {
                     Log.e("onError ", "$e")
                 }
-            })*/
-            .subscribe { lines ->
+            })
+            /*.subscribe { lines ->
                 Log.d("onSuccess ", "${lines.size}")
                 for (i in 0 until lines.size) {
                     for(j in 0 until lines[i].stations.size) {

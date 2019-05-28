@@ -1,6 +1,8 @@
 package msc.fooxer.studplaces
 
 import io.reactivex.Single
+import retrofit2.Call
+import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
 
@@ -9,5 +11,5 @@ interface ServerApi {
     fun places(): Single<List<Place>>
 
     @POST("search.php")
-    fun createRequest(request : List<String>): Single<List<Place>>
+    fun createRequest(@Body request : Array<String>): Call<MutableList<Place>>
 }

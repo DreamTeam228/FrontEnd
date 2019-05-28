@@ -1,5 +1,6 @@
 package msc.fooxer.studplaces
 
+import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
@@ -15,12 +16,17 @@ import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import android.os.AsyncTask.execute
+import android.support.v4.content.ContextCompat
+import android.widget.Toast
 import org.apache.http.*
 import org.apache.http.client.ClientProtocolException
 import org.apache.http.client.entity.UrlEncodedFormEntity
 import org.apache.http.client.methods.HttpPost
 import org.apache.http.impl.client.DefaultHttpClient
 import org.apache.http.message.BasicNameValuePair
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.io.IOException
 import java.io.UnsupportedEncodingException
 
@@ -52,24 +58,40 @@ class Search : AppCompatActivity() {
 
 
             /*val retrofit = Retrofit.Builder()
-                .baseUrl("https://api.hh.ru/metro/")
+                .baseUrl("http://trportal.ru/nekit/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build()
 
             val serverApi = retrofit.create(ServerApi::class.java)
 
-            serverApi.createRequest()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe { lines ->
-                    Log.d("onSuccess ", "${lines.size}")
-                    for (i in 0 until lines.size) {
-                        for(j in 0 until lines[i].stations.size) {
-                            Log.d("STATION NAME", lines[i].stations[j].name)
-                        }
+
+
+            val call = serverApi.createRequest(arrayOf("Марьино", "Марьино"))
+            call.enqueue(object : Callback<MutableList<Place>> {
+                override fun onResponse(call: Call<MutableList<Place>>, response: Response<MutableList<Place>>) {
+                    if (response.isSuccessful) {
+                        // tasks available
+                        MainActivity.RANDOM_WEEK = response.body()!!
+                        if(MainActivity.RANDOM_WEEK.isNotEmpty())
+                            Toast.makeText(it.context, "Data is downloaded", Toast.LENGTH_LONG).show() //ok
+                        for (i in 0 until MainActivity.RANDOM_WEEK.size)
+                            if (MainActivity.RANDOM_WEEK[i].id in MainActivity.FAV_INDEXES) MainActivity.RANDOM_WEEK[i].isFavorite = true
+
+                        val i = Intent(it.context, Random::class.java)
+                        ContextCompat.startActivity(it.context, i, null)
+                    } else {
+                        Log.e("ERROR", "response.isSuccessful? - ${response.isSuccessful}")
+                        // error response, no access to resource?
                     }
-                }*/
+                }
+
+                override fun onFailure(call: Call<MutableList<Place>>, t: Throwable) {
+                    Log.e("ERROR", "${t.printStackTrace()}")
+                }
+            })*/
+
+
 
 
             val async = Search_AsyncTask(this)
