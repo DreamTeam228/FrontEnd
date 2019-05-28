@@ -1,5 +1,6 @@
 package msc.fooxer.studplaces
 
+import android.annotation.SuppressLint
 import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
@@ -18,10 +19,19 @@ import java.net.HttpURLConnection
 import java.net.MalformedURLException
 import java.net.URL
 import java.util.ArrayList
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
+import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.Retrofit
+import io.reactivex.observers.DisposableSingleObserver
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
+import java.lang.Math.log
+
 
 class SplashScreen : AppCompatActivity() {
     var dp: ArrayList<Place> = ArrayList()
 
+    @SuppressLint("CheckResult")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //setContentView(R.layout.activity_splash_screen)
@@ -36,6 +46,34 @@ class SplashScreen : AppCompatActivity() {
 
             AsynkJson(this).execute()
 
+        /*val retrofit = Retrofit.Builder()
+            .baseUrl("https://api.hh.ru/metro/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+            .build()
+
+        val messagesApi = retrofit.create(MetroApi::class.java)
+
+        messagesApi.getStations()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            /*.subscribe(object : DisposableSingleObserver<ArrayList<Line>>() {
+                override fun onSuccess(messages: ArrayList<Line>) {
+                    Log.d("onSuccess ", "${messages.size}")
+                }
+
+                override fun onError(e: Throwable) {
+                    Log.e("onError ", "$e")
+                }
+            })*/
+            .subscribe { lines ->
+                Log.d("onSuccess ", "${lines.size}")
+                for (i in 0 until lines.size) {
+                    for(j in 0 until lines[i].stations.size) {
+                        Log.d("STATION NAME", lines[i].stations[j].name)
+                    }
+                }
+            }*/
     }
 
 
@@ -139,6 +177,71 @@ class SplashScreen : AppCompatActivity() {
 
 
         }
+
+    inner class AsynkMetro(val context : Context) : AsyncTask<Void, Void, String>() {
+        lateinit var json_url: String
+        override fun onPreExecute() {
+            json_url = getText(R.string.metro_link).toString()
+        }
+
+        override fun doInBackground(vararg voids: Void): String {
+            lateinit var url: URL
+            var response = StringBuilder() // стринг не пересоздается, а изменяется
+            try { // попытка создать юрл, хз почему нельзя просто взять и открыть
+                url =
+                    URL(json_url)
+            } catch (e: MalformedURLException) {
+                throw IllegalArgumentException("Invalid URL")
+            }
+            var conn: HttpURLConnection? = null
+            try {
+                conn = url.openConnection() as HttpURLConnection // открываем горе-ссылку
+                conn.doOutput = false // вводить не можем
+                conn.doInput = true // можем выводить
+                conn.requestMethod = "GET" // get - получение ресурса
+
+                val status = conn.responseCode // cостояние hhtp - 200 - ok
+                if (status != 200) {
+                    throw IOException("Post failed with error code $status")
+                } else {
+                    val instream = BufferedReader(InputStreamReader(conn.inputStream)) // открываем буферный поток ввода
+
+                    var inputLine: String? = instream.readLine()
+                    while ((inputLine) != null) { // читаем все строки
+                        response.append(inputLine)
+                        inputLine = instream.readLine()
+                    }
+                    instream.close()
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            } finally {
+                conn?.disconnect()
+                val jsonString = response.toString().trim() // переводим в строку и удаляем ненужные пробелы
+                Log.i(ContentValues.TAG, "Received JSON: $jsonString")
+                return jsonString
+            }
+        }
+
+        override fun onPostExecute(result: String) {
+            super.onPostExecute(result)
+            try {
+                dp = MainActivity.pla.getInfo(result)
+            } catch (e: Exception) {
+                Toast.makeText(context, print(e.message).toString(), Toast.LENGTH_LONG).show()
+            }
+            if (dp.isNotEmpty()) {
+                //Toast.makeText(context, "Data is downloaded", Toast.LENGTH_LONG).show() //ok
+            } else {
+                Toast.makeText(context, getText(R.string.fav_cache), Toast.LENGTH_LONG).show() //ok
+            }
+            val i = Intent(baseContext, MainActivity::class.java)
+            i.putParcelableArrayListExtra("dp_ELEMENTS", dp)
+            startActivity(i)
+            finish()
+
+        }
+    }
 
         private fun isNetworkAvailable(context: Context): Boolean {
             val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager

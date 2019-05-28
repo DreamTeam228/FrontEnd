@@ -10,6 +10,9 @@ var METRO: Array <SearchOption> = arrayOf(SearchOption("Сокольническ
     SearchOption("Серпуховско-Тимирязевская линия", R.color.Metro_Line9), SearchOption("Люблюнско-Дмитровская линия", R.color.Metro_Line10), SearchOption("Каховская линия", R.color.Metro_Line11),
     SearchOption("Бутовсская линия", R.color.Metro_Line12),SearchOption("МЦК", R.color.Metro_Line14), SearchOption("Большая кольцевая линия", R.color.Metro_Line15))
 //var LINE_1: Array <SearchOption> = arrayOf()
+
+var METRO_NEW: MutableList<Line> = ArrayList() // Добавить
+
     val DB_NAME = "LOCAL_DATABASE"
     var CURRENT_VER = 2
     val FAV_TABLE_NAME = "FAVORITES"

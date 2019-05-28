@@ -8,7 +8,21 @@ import android.widget.SeekBar
 import kotlinx.android.synthetic.main.activity_search.*
 import android.text.Editable
 import android.text.TextWatcher
-
+import android.util.Log
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
+import retrofit2.Retrofit
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
+import retrofit2.converter.gson.GsonConverterFactory
+import android.os.AsyncTask.execute
+import org.apache.http.*
+import org.apache.http.client.ClientProtocolException
+import org.apache.http.client.entity.UrlEncodedFormEntity
+import org.apache.http.client.methods.HttpPost
+import org.apache.http.impl.client.DefaultHttpClient
+import org.apache.http.message.BasicNameValuePair
+import java.io.IOException
+import java.io.UnsupportedEncodingException
 
 
 class Search : AppCompatActivity() {
@@ -35,6 +49,33 @@ class Search : AppCompatActivity() {
             // и запускаем новое активити, отфильтрованное
 
             // можно попробовать сделать через Рандом_АсинкТаск, заменив там ссылку и интент
+
+
+            /*val retrofit = Retrofit.Builder()
+                .baseUrl("https://api.hh.ru/metro/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .build()
+
+            val serverApi = retrofit.create(ServerApi::class.java)
+
+            serverApi.createRequest()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe { lines ->
+                    Log.d("onSuccess ", "${lines.size}")
+                    for (i in 0 until lines.size) {
+                        for(j in 0 until lines[i].stations.size) {
+                            Log.d("STATION NAME", lines[i].stations[j].name)
+                        }
+                    }
+                }*/
+
+
+            val async = Search_AsyncTask(this)
+            async.execute()
+
+
         }
 
         price_bar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
