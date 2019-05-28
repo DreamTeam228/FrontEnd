@@ -10,7 +10,7 @@ class DBHelper(context: Context?, name: String? = DB_NAME, factory: SQLiteDataba
     override fun onCreate(db: SQLiteDatabase?) {
         if (db != null) {
             db.execSQL("create table $FAV_TABLE_NAME($KEY_INDEX integer primary key,$KEY_NAME text, $KEY_CATEGORY text,  $KEY_DESCR text,$KEY_PRICE integer, $KEY_PIC text, " +
-                    "$KEY_METRO text, $KEY_PHONE text, $KEY_ADDRESS text, $KEY_FAV integer, $KEY_DATE integer)")
+                    "$KEY_METRO text, $KEY_PHONE text, $KEY_ADDRESS text, $KEY_FAV integer, $KEY_DATE integer, $KEY_DISCOUNT integer, $KEY_URL text)")
 
 
         }

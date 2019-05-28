@@ -17,7 +17,6 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.ProgressBar
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.content_main.*
@@ -96,7 +95,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             cv.put(KEY_INDEX, place.id)
             cv.put(KEY_NAME, place.name)
             cv.put(KEY_DESCR, place.description)
-            cv.put(KEY_CATEGORY, place.Сategory)
+            cv.put(KEY_CATEGORY, place.category)
             cv.put(KEY_METRO, place.metro)
             cv.put(KEY_ADDRESS, place.address)
             cv.put(KEY_PRICE, place.price)
@@ -104,6 +103,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             cv.put(KEY_PIC, place.picture)
             cv.put(KEY_FAV, if(place.isFavorite) 1 else 0)
             cv.put(KEY_DATE,Date().time)
+            cv.put(KEY_DISCOUNT,place.discount)
+            cv.put(KEY_URL,place.url)
             db.insert(table,null,cv)
             Log.d("mLog", "New note was added into $table")
         }

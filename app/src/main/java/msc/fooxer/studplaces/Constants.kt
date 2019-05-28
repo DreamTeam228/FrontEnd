@@ -14,7 +14,7 @@ var METRO: Array <SearchOption> = arrayOf(SearchOption("Сокольническ
 var METRO_NEW: MutableList<Lines> = ArrayList() // Добавить
 
     val DB_NAME = "LOCAL_DATABASE"
-    var CURRENT_VER = 2
+    var CURRENT_VER = 3
     val FAV_TABLE_NAME = "FAVORITES"
     val CASH_TABLE_NAME = "CASH"
     val KEY_INDEX = "ID"
@@ -35,7 +35,7 @@ var METRO_NEW: MutableList<Lines> = ArrayList() // Добавить
 
 /*val id: Int,
     val name: String,
-    val Сategory: String,
+    val category: String,
     val description: String,
     val metro: String,
     val phoneNumbers: String,
