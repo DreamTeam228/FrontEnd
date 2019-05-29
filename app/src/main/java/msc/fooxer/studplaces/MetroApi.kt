@@ -9,7 +9,7 @@ interface MetroApi {
 }
 
 
-class Station(val name : String, val lat : Float, val lng : Float)
+class Station(val name : String, val lat : Double, val lng : Double, val order: Int)
 
 class Line (val name : String, val color : String, val stations : ArrayList<Station>) {
 }

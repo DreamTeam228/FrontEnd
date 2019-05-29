@@ -2,6 +2,7 @@ package msc.fooxer.studplaces
 
 import android.os.AsyncTask
 import android.provider.ContactsContract
+import android.provider.SyncStateContract
 import android.widget.TextView
 import org.json.JSONArray
 import org.json.JSONException
@@ -66,5 +67,40 @@ class DataPlaces {
             e.printStackTrace()
         }
         return places
+    }
+   fun getMetro(Json_string: String) {
+        try {
+            var mJsonObj = JSONObject(Json_string)
+            var lines = mJsonObj.getJSONArray("lines")
+            var count = 0
+            // Присвоение полям объекта класса
+
+            for (i in 0 until lines.length()) {
+                val Jsonchik = lines.getJSONObject(count)
+                val id = Jsonchik.getInt("id")
+                val color = Jsonchik.getString("hex_color")
+                val name = Jsonchik.getString("name")
+                var lineStations = ArrayList<Station>()
+                var stations = Jsonchik.optJSONArray("stations")
+                if (stations!=null) {
+                  for (j in 0 until stations.length()) {
+                      val station = stations.getJSONObject(j)
+                      val sName = station.getString("name")
+                      val lat = station.getDouble("lat")
+                      val lng = station.getDouble("lng")
+                      val order = station.getInt("order")
+                      val st = Station (sName,lat,lng,order)
+                      lineStations.add(st)
+                  }
+                               }
+              val line = Line(name,color,lineStations)
+              METRO_NEW.add(line)
+              count++
+
+            }
+
+        } catch (e: JSONException) {
+            e.printStackTrace()
+        }
     }
 }
