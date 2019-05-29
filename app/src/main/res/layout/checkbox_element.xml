@@ -24,7 +24,7 @@
                 android:layout_height="wrap_content" android:layout_weight="1"/>
         <ImageView
                 android:layout_width="20dp"
-                android:layout_height="20dp" app:srcCompat="@drawable/ic_menu_camera"
+                android:layout_height="20dp" app:srcCompat="@android:drawable/radiobutton_off_background"
                 android:id="@+id/list_icon" android:layout_weight="1"/>
     </LinearLayout>
 </LinearLayout>

@@ -6,6 +6,8 @@ import android.content.Context
 import android.content.Intent
 import android.content.res.Resources
 import android.database.Cursor
+import android.graphics.Color
+import android.graphics.Color.parseColor
 import android.net.ConnectivityManager
 import android.os.AsyncTask
 import android.support.v7.app.AppCompatActivity
@@ -243,7 +245,7 @@ class SplashScreen : AppCompatActivity() {
                 Toast.makeText(context, "МЕТРО ОК", Toast.LENGTH_LONG).show() //ok
                 for(i in 0 until METRO_NEW.size) {
                     for(j in 0 until METRO_NEW[i].stations.size) {
-                        STATIONS.add(METRO_NEW[i].stations[j])
+                        STATIONS.add(SearchOption(METRO_NEW[i].stations[j].name, parseColor("#${METRO_NEW[i].hex_color}")))
                     }
                 }
             }

@@ -81,7 +81,7 @@ open class CustomAdapter internal constructor(context: Context, private var elem
 }
 
 
-class SearchAdapter internal constructor(context: Context, private val elements: ArrayList<Station>) :
+class SearchAdapter internal constructor(context: Context, private var elements: ArrayList<SearchOption>, val filter: String) :
     RecyclerView.Adapter<SearchAdapter.ViewHolder>() {
     private val inflater: LayoutInflater
     init {
@@ -106,7 +106,26 @@ class SearchAdapter internal constructor(context: Context, private val elements:
         }?.hex_color*/
 
         //viewHolder.imageView.setColorFilter(Color.parseColor(color))
-        viewHolder.checkBox.text = element.name
+        viewHolder.checkBox.text = element.text
+        viewHolder.imageView.setColorFilter(element.image)
+        viewHolder.checkBox.isChecked = element.isChecked
+
+        viewHolder.checkBox.setOnClickListener{
+            element.isChecked = !element.isChecked
+            viewHolder.checkBox.isChecked = element.isChecked
+            if (element.isChecked)
+                if (filter == STATION_FILTER)
+                    checkedMetro.add(element.text)
+                else if (filter == CATEGORY_FILTER)
+                    checkedCategory.add(element.text)
+            else {
+                    if (filter == STATION_FILTER)
+                        checkedMetro.remove(element.text)
+                    else if (filter == CATEGORY_FILTER)
+                        checkedCategory.remove(element.text)
+                }
+
+        }
 
 
 
@@ -124,5 +143,10 @@ class SearchAdapter internal constructor(context: Context, private val elements:
             checkBox = view.findViewById<View>(R.id.checkBox_search) as CheckBox
 
         }
+    }
+
+    fun setData(elements: ArrayList<SearchOption>) {
+        this.elements = elements
+        notifyDataSetChanged()
     }
 }

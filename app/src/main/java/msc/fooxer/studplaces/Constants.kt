@@ -1,8 +1,8 @@
 package msc.fooxer.studplaces
 
-var CATEGORY: Array <SearchOption> = arrayOf(SearchOption("Бары"),
-    SearchOption("Антикафе"), SearchOption("Музеи"),
-    SearchOption("Кинотеатры"), SearchOption("Разное"), SearchOption("буль"))
+var CATEGORY: ArrayList <SearchOption> = arrayListOf(SearchOption("Бар"),
+    SearchOption("Антикафе"), SearchOption("Музей"),
+    SearchOption("Кино"), SearchOption("Разное"), SearchOption("буль"))
 
 var METRO: Array <SearchOption> = arrayOf(SearchOption("Сокольническая линия", R.color.Metro_Line1), SearchOption("Замоскворецкая линия", R.color.Metro_Line2),
     SearchOption("Арбатско-Покровская линия", R.color.Metro_Line3), SearchOption("Филевская линия", R.color.Metro_Line4),SearchOption("Кольцевая линия", R.color.Metro_Line5),
@@ -12,7 +12,7 @@ var METRO: Array <SearchOption> = arrayOf(SearchOption("Сокольническ
 //var LINE_1: Array <SearchOption> = arrayOf()
 
 var METRO_NEW: MutableList<Line> = ArrayList() // Добавить
-var STATIONS: ArrayList<Station> = ArrayList()
+var STATIONS: ArrayList<SearchOption> = ArrayList()
 
     val DB_NAME = "LOCAL_DATABASE"
     var CURRENT_VER = 3
@@ -31,7 +31,8 @@ var STATIONS: ArrayList<Station> = ArrayList()
     val KEY_DATE = "ADDED"
     val KEY_URL = "URL"
     val KEY_DISCOUNT = "DISCOUNT"
-
+    val STATION_FILTER = "STATIONS"
+    val CATEGORY_FILTER = "CATEGORIES"
 
 
 /*val id: Int,

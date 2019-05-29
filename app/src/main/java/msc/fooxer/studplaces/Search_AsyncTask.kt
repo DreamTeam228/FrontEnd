@@ -24,6 +24,11 @@ import java.net.MalformedURLException
 import java.net.URL
 import android.os.AsyncTask.execute
 import org.apache.http.protocol.HTTP
+import org.json.JSONArray
+import org.json.JSONObject
+import retrofit2.Retrofit
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
+import retrofit2.converter.gson.GsonConverterFactory
 
 
 class Search_AsyncTask(private val context : Context)  : AsyncTask <Void, Void, String>() {
@@ -63,8 +68,20 @@ class Search_AsyncTask(private val context : Context)  : AsyncTask <Void, Void, 
         val httpclient = DefaultHttpClient()
         val http = HttpPost("http://www.trportal.ru/nekit/search.php")
         val nameValuePairs = ArrayList<NameValuePair>(2)
-        nameValuePairs.add(BasicNameValuePair("metro", "Марьино"))
-        nameValuePairs.add(BasicNameValuePair("price", "100"))
+
+        val jsonMetro  = JSONArray()
+        for (i in 0 until checkedMetro.size) {
+            jsonMetro.put(checkedMetro[i])
+        }
+
+        val jsonCategory = JSONArray()
+        for (i in 0 until checkedCategory.size) {
+            jsonMetro.put(checkedCategory[i])
+        }
+
+        nameValuePairs.add(BasicNameValuePair("metro",jsonMetro.toString()))
+        nameValuePairs.add(BasicNameValuePair("category", jsonCategory.toString()))
+        nameValuePairs.add(BasicNameValuePair("price","1000" ))
         httpPost.setHeader("Content-Type", "application/json; charset=utf-8")
         http.entity = UrlEncodedFormEntity(nameValuePairs, HTTP.UTF_8)
         //получаем ответ от сервера
