@@ -46,7 +46,8 @@ class SplashScreen : AppCompatActivity() {
             Toast.makeText(this, getText(R.string.connection_ok), Toast.LENGTH_LONG).show()
 
             AsynkJson(this).execute()
-        AsynkMetro(this).execute()
+            if (METRO_NEW.isNullOrEmpty())
+                AsynkMetro(this).execute()
 
         val retrofit = Retrofit.Builder()
             .baseUrl("https://api.hh.ru/metro/")
@@ -242,7 +243,6 @@ class SplashScreen : AppCompatActivity() {
                 Toast.makeText(context, print(e.message).toString(), Toast.LENGTH_LONG).show()
             }
             if (METRO_NEW.isNotEmpty()) {
-                Toast.makeText(context, "МЕТРО ОК", Toast.LENGTH_LONG).show() //ok
                 for(i in 0 until METRO_NEW.size) {
                     for(j in 0 until METRO_NEW[i].stations.size) {
                         STATIONS.add(SearchOption(METRO_NEW[i].stations[j].name, parseColor("#${METRO_NEW[i].hex_color}")))

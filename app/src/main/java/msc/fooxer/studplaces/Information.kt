@@ -40,8 +40,8 @@ class Information : AppCompatActivity() {
         description.text = place.description
         Picasso.get()
             .load(place.picture)
-            .error(R.drawable.samurai)
-            .placeholder(R.color.Metro_Line9)
+            .error(R.color.background)
+            .placeholder(R.color.textColor)
             .into(informationImage)
         address.text = "Метро: ${place.metro}\n${place.address}"
         phone.text = place.phoneNumbers

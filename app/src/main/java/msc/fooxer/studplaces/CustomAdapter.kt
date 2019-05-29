@@ -2,7 +2,6 @@ package msc.fooxer.studplaces
 
 import android.content.Context
 import android.content.Intent
-import android.graphics.Color
 import android.support.v4.content.ContextCompat.startActivity
 import android.support.v7.widget.RecyclerView
 import android.util.Log
@@ -17,7 +16,6 @@ open class CustomAdapter internal constructor(context: Context, private var elem
     RecyclerView.Adapter<CustomAdapter.ViewHolder>() {
 
     private val inflater: LayoutInflater
-
     init {
         this.inflater = LayoutInflater.from(context)
     }
@@ -32,8 +30,8 @@ open class CustomAdapter internal constructor(context: Context, private var elem
         val element = elements[i]
         Picasso.get()
             .load(element.picture)
-            .error(R.drawable.samurai)
-            .placeholder(R.color.Metro_Line9)
+            .error(R.color.background)
+            .placeholder(R.color.textColor)
             .into(viewHolder.imageView)
         viewHolder.textView.text = element.name
         if (element.price == 0) {
@@ -41,13 +39,11 @@ open class CustomAdapter internal constructor(context: Context, private var elem
                 viewHolder.priceView.text = "Бесплатно"
             else
                 viewHolder.priceView.text = "Скидка ${element.discount}%"
-
         } else {
             val str = "${element.price} рублей"
             viewHolder.priceView.text = str
         }
         viewHolder.categoryView.text = element.category
-
     }
 
     override fun getItemCount(): Int {
@@ -59,7 +55,6 @@ open class CustomAdapter internal constructor(context: Context, private var elem
         internal val textView: TextView
         internal val priceView: TextView
         internal val categoryView: TextView
-
         init {
             imageView = view.findViewById<View>(R.id.photo) as ImageView
             textView = view.findViewById<View>(R.id.description) as TextView
@@ -71,7 +66,6 @@ open class CustomAdapter internal constructor(context: Context, private var elem
                 startActivity(it.context, info, null)
             }
         }
-
     }
 
     fun setData(elements: List<Place>) {
@@ -100,31 +94,24 @@ class SearchAdapter internal constructor(context: Context, private var elements:
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         Log.d("VIEWHOLDER_POSITION", "POSITION IS $position")
         val element = elements[position]
-       /* val line_num = element.id.toInt()
-        val color = METRO_NEW.find {
-            it.id == line_num
-        }?.hex_color*/
-
-        //viewHolder.imageView.setColorFilter(Color.parseColor(color))
         viewHolder.checkBox.text = element.text
         viewHolder.imageView.setColorFilter(element.image)
         viewHolder.checkBox.isChecked = element.isChecked
-
         viewHolder.checkBox.setOnClickListener{
             element.isChecked = !element.isChecked
             viewHolder.checkBox.isChecked = element.isChecked
-            if (element.isChecked)
+            if (element.isChecked) {
                 if (filter == STATION_FILTER)
                     checkedMetro.add(element.text)
                 else if (filter == CATEGORY_FILTER)
                     checkedCategory.add(element.text)
+            }
             else {
                     if (filter == STATION_FILTER)
                         checkedMetro.remove(element.text)
                     else if (filter == CATEGORY_FILTER)
                         checkedCategory.remove(element.text)
                 }
-
         }
 
 
@@ -141,7 +128,6 @@ class SearchAdapter internal constructor(context: Context, private var elements:
         init {
             imageView = view.findViewById<View>(R.id.list_icon) as ImageView
             checkBox = view.findViewById<View>(R.id.checkBox_search) as CheckBox
-
         }
     }
 

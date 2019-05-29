@@ -36,8 +36,8 @@ class Search_AsyncTask(private val context : Context)  : AsyncTask <Void, Void, 
     override fun onPreExecute() {
         super.onPreExecute()
         if(!isNetworkAvailable(context)) {
-            Toast.makeText(context, "The connection is lost", Toast.LENGTH_LONG).show() //вывод сообщения о соединении с интернетом
-        } else Toast.makeText(context, "The connection is ok", Toast.LENGTH_LONG).show()
+            Toast.makeText(context, R.string.connection_lost, Toast.LENGTH_LONG).show() //вывод сообщения о соединении с интернетом
+        }
     }
 
     override fun doInBackground(vararg params: Void?): String {
@@ -76,19 +76,19 @@ class Search_AsyncTask(private val context : Context)  : AsyncTask <Void, Void, 
 
         val jsonCategory = JSONArray()
         for (i in 0 until checkedCategory.size) {
-            jsonMetro.put(checkedCategory[i])
+            jsonCategory.put(checkedCategory[i])
         }
 
         nameValuePairs.add(BasicNameValuePair("metro",jsonMetro.toString()))
         nameValuePairs.add(BasicNameValuePair("category", jsonCategory.toString()))
-        nameValuePairs.add(BasicNameValuePair("price","1000" ))
+        nameValuePairs.add(BasicNameValuePair("price", "$maxPrice" ))
         httpPost.setHeader("Content-Type", "application/json; charset=utf-8")
         http.entity = UrlEncodedFormEntity(nameValuePairs, HTTP.UTF_8)
         //получаем ответ от сервера
 
 
 //        setEntity(UrlEncodedFormEntity(params, HTTP.UTF_8))
-
+        lateinit var s: String
         // Making HTTP Request
         try {
             val responSse = httpclient.execute(http, BasicResponseHandler()) as String
@@ -97,7 +97,7 @@ class Search_AsyncTask(private val context : Context)  : AsyncTask <Void, Void, 
 
             // writing response to log
             Log.d("Http Response:", responSse.toString())
-            var s : String = responSse.toString()
+             s = responSse
         } catch (e: ClientProtocolException) {
             // writing exception to log
             e.printStackTrace()
@@ -106,42 +106,9 @@ class Search_AsyncTask(private val context : Context)  : AsyncTask <Void, Void, 
             e.printStackTrace()
 
         }
-
-        try { // попытка создать юрл, хз почему нельзя просто взять и открыть
-            url =
-                URL("http://trportal.ru/nekit/search.php")
-        } catch (e: MalformedURLException) {
-            throw IllegalArgumentException("Invalid URL")
+        return s
         }
-        var conn: HttpURLConnection? = null
-        try {
-            conn = url.openConnection() as HttpURLConnection // открываем горе-ссылку
-            conn.doOutput = false // вводить не можем
-            conn.doInput = true // можем выводить
-            conn.requestMethod = "GET" // get - получение ресурса
 
-            val status = conn.responseCode // cостояние hhtp - 200 - ok
-            if (status != 200) {
-                throw IOException("Post failed with error code $status")
-            } else {
-                val instream = BufferedReader(InputStreamReader(conn.inputStream)) // открываем буферный поток ввода
-
-                var inputLine: String? = instream.readLine()
-                while ((inputLine) != null) { // читаем все строки
-                    response.append(inputLine)
-                    inputLine = instream.readLine()
-                }
-                instream.close()
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
-        } finally {
-            conn?.disconnect()
-            val jsonString = response.toString().trim() // переводим в строку и удаляем ненужные пробелы
-            Log.i(ContentValues.TAG, "Received JSON: $jsonString")
-            return jsonString
-        }
-    }
 
     override fun onPostExecute(result: String) {
         super.onPostExecute(result)
@@ -150,11 +117,8 @@ class Search_AsyncTask(private val context : Context)  : AsyncTask <Void, Void, 
         } catch (e: Exception) {
             Toast.makeText(context, print(e.message).toString(), Toast.LENGTH_LONG).show()
         }
-        if(MainActivity.RANDOM_WEEK.isNotEmpty())
-            Toast.makeText(context, "Data is downloaded", Toast.LENGTH_LONG).show() //ok
         for (i in 0 until MainActivity.RANDOM_WEEK.size)
             if (MainActivity.RANDOM_WEEK[i].id in MainActivity.FAV_INDEXES) MainActivity.RANDOM_WEEK[i].isFavorite = true
-
         val i = Intent(context, Random::class.java)
         startActivity(context, i, null)
     }

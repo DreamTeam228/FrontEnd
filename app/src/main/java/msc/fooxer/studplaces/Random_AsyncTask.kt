@@ -20,8 +20,8 @@ class Random_AsyncTask(private val context : Context)  : AsyncTask <Void, Void, 
     override fun onPreExecute() {
         super.onPreExecute()
         if(!isNetworkAvailable(context)) {
-            Toast.makeText(context, "The connection is lost", Toast.LENGTH_LONG).show() //вывод сообщения о соединении с интернетом
-        } else Toast.makeText(context, "The connection is ok", Toast.LENGTH_LONG).show()
+            Toast.makeText(context, R.string.connection_lost, Toast.LENGTH_LONG).show() //вывод сообщения о соединении с интернетом
+        }
     }
 
     override fun doInBackground(vararg params: Void?): String {
@@ -70,8 +70,6 @@ class Random_AsyncTask(private val context : Context)  : AsyncTask <Void, Void, 
         } catch (e: Exception) {
             Toast.makeText(context, print(e.message).toString(), Toast.LENGTH_LONG).show()
         }
-        if(MainActivity.RANDOM_WEEK.isNotEmpty())
-            Toast.makeText(context, "Data is downloaded", Toast.LENGTH_LONG).show() //ok
         for (i in 0 until MainActivity.RANDOM_WEEK.size)
             if (MainActivity.RANDOM_WEEK[i].id in MainActivity.FAV_INDEXES) MainActivity.RANDOM_WEEK[i].isFavorite = true
 

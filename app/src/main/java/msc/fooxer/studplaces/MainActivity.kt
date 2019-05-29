@@ -224,9 +224,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             R.id.app_bar_search -> {
                 //startActivity(Intent(this, Random::class.java))
                 return true}
-            R.id.filter -> {
-                val filter = Intent(this, Search::class.java)
-                startActivity(filter)
+            R.id.help -> {
+
+                return true
+            }
+            R.id.about -> {
                 return true
             }
             else -> return super.onOptionsItemSelected(item)

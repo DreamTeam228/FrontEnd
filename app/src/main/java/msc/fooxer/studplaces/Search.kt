@@ -23,6 +23,7 @@ import java.util.concurrent.TimeUnit
 var checkedCategory : MutableList<String> = ArrayList()
 var checkedMetro : MutableList<String> = ArrayList()
 var METRO_TMP : ArrayList<SearchOption> = ArrayList()
+var maxPrice: Int = 1000
 
 class Search : AppCompatActivity() {
 
@@ -43,15 +44,14 @@ class Search : AppCompatActivity() {
         metro_recycler.adapter = adapter_metro
         metro_recycler.layoutManager = LinearLayoutManager(this)
 
-
         Observable.create(ObservableOnSubscribe<String> { subscriber ->
             metroSearch.setOnQueryTextListener(object : android.widget.SearchView.OnQueryTextListener,
                 SearchView.OnQueryTextListener {
+
                 override fun onQueryTextChange(newText: String): Boolean {
                     subscriber.onNext(newText)
                     return false
                 }
-
                 override fun onQueryTextSubmit(query: String): Boolean {
                     subscriber.onNext(query)
                     return false
@@ -79,62 +79,14 @@ class Search : AppCompatActivity() {
                     if (!showEmptyFlag) adapter_metro.setData(METRO_TMP)
                     if (text.isNullOrBlank()) {
                         adapter_metro.setData(STATIONS)
-
                     }
                 }
             }
 
         find_button.setOnClickListener{
-            // здесь грабим всю инфу из полей активити
-            // и как-то пихаем её в джсон
-            // и ещё отправляем её на сервак
-            // получаем в ответ джсон, распаковываем его в массив
-            // и запускаем новое активити, отфильтрованное
-
-            // можно попробовать сделать через Рандом_АсинкТаск, заменив там ссылку и интент
-
-
-            /*val retrofit = Retrofit.Builder()
-                .baseUrl("http://trportal.ru/nekit/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .build()
-
-            val serverApi = retrofit.create(ServerApi::class.java)
-
-
-
-            val call = serverApi.createRequest(arrayOf("Марьино", "Марьино"))
-            call.enqueue(object : Callback<MutableList<Place>> {
-                override fun onResponse(call: Call<MutableList<Place>>, response: Response<MutableList<Place>>) {
-                    if (response.isSuccessful) {
-                        // tasks available
-                        MainActivity.RANDOM_WEEK = response.body()!!
-                        if(MainActivity.RANDOM_WEEK.isNotEmpty())
-                            Toast.makeText(it.context, "Data is downloaded", Toast.LENGTH_LONG).show() //ok
-                        for (i in 0 until MainActivity.RANDOM_WEEK.size)
-                            if (MainActivity.RANDOM_WEEK[i].id in MainActivity.FAV_INDEXES) MainActivity.RANDOM_WEEK[i].isFavorite = true
-
-                        val i = Intent(it.context, Random::class.java)
-                        ContextCompat.startActivity(it.context, i, null)
-                    } else {
-                        Log.e("ERROR", "response.isSuccessful? - ${response.isSuccessful}")
-                        // error response, no access to resource?
-                    }
-                }
-
-                override fun onFailure(call: Call<MutableList<Place>>, t: Throwable) {
-                    Log.e("ERROR", "${t.printStackTrace()}")
-                }
-            })*/
-
-
-
-
+            maxPrice = price_bar.progress
             val async = Search_AsyncTask(this)
             async.execute()
-
-
         }
 
         price_bar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
@@ -146,7 +98,6 @@ class Search : AppCompatActivity() {
                 priceValue.setText(seekBar!!.progress.toString())
             }
         })
-
 
         priceValue.setText(R.string.max_price)
         priceValue.addTextChangedListener(object : TextWatcher {
