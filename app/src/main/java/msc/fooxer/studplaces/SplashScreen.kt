@@ -44,6 +44,7 @@ class SplashScreen : AppCompatActivity() {
             Toast.makeText(this, getText(R.string.connection_ok), Toast.LENGTH_LONG).show()
 
             AsynkJson(this).execute()
+        AsynkMetro(this).execute()
 
         val retrofit = Retrofit.Builder()
             .baseUrl("https://api.hh.ru/metro/")
@@ -56,8 +57,8 @@ class SplashScreen : AppCompatActivity() {
         messagesApi.getStations()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(object : DisposableSingleObserver<Array<Lines>>() {
-                override fun onSuccess(lines: Array<Lines>) {
+            .subscribe(object : DisposableSingleObserver<Array<Line>>() {
+                override fun onSuccess(lines: Array<Line>) {
                     Log.d("onSuccess ", "${lines.size}")
                     for (i in 0 until lines.size) {
                         for(j in 0 until lines[i].stations.size) {
@@ -234,20 +235,18 @@ class SplashScreen : AppCompatActivity() {
         override fun onPostExecute(result: String) {
             super.onPostExecute(result)
             try {
-                dp = MainActivity.pla.getInfo(result)
+                MainActivity.pla.getMetro(result)
             } catch (e: Exception) {
                 Toast.makeText(context, print(e.message).toString(), Toast.LENGTH_LONG).show()
             }
-            if (dp.isNotEmpty()) {
-                //Toast.makeText(context, "Data is downloaded", Toast.LENGTH_LONG).show() //ok
-            } else {
-                Toast.makeText(context, getText(R.string.fav_cache), Toast.LENGTH_LONG).show() //ok
+            if (METRO_NEW.isNotEmpty()) {
+                Toast.makeText(context, "МЕТРО ОК", Toast.LENGTH_LONG).show() //ok
+                for(i in 0 until METRO_NEW.size) {
+                    for(j in 0 until METRO_NEW[i].stations.size) {
+                        STATIONS.add(METRO_NEW[i].stations[j])
+                    }
+                }
             }
-            val i = Intent(baseContext, MainActivity::class.java)
-            i.putParcelableArrayListExtra("dp_ELEMENTS", dp)
-            startActivity(i)
-            finish()
-
         }
     }
 

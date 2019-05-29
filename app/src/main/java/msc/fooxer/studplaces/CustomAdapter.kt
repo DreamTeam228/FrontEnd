@@ -2,6 +2,7 @@ package msc.fooxer.studplaces
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.support.v4.content.ContextCompat.startActivity
 import android.support.v7.widget.RecyclerView
 import android.util.Log
@@ -80,7 +81,7 @@ open class CustomAdapter internal constructor(context: Context, private var elem
 }
 
 
-class SearchAdapter internal constructor(context: Context, private val elements: Array<SearchOption>) :
+class SearchAdapter internal constructor(context: Context, private val elements: ArrayList<Station>) :
     RecyclerView.Adapter<SearchAdapter.ViewHolder>() {
     private val inflater: LayoutInflater
     init {
@@ -99,8 +100,15 @@ class SearchAdapter internal constructor(context: Context, private val elements:
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         Log.d("VIEWHOLDER_POSITION", "POSITION IS $position")
         val element = elements[position]
-        viewHolder.imageView.setImageResource(element.image)
-        viewHolder.checkBox.text = element.text
+       /* val line_num = element.id.toInt()
+        val color = METRO_NEW.find {
+            it.id == line_num
+        }?.hex_color*/
+
+        //viewHolder.imageView.setColorFilter(Color.parseColor(color))
+        viewHolder.checkBox.text = element.name
+
+
 
         if (viewHolder.checkBox.isChecked) {
             Log.d("CHECKSTATE_IS_TRUE", "POSITION IS $position")
@@ -114,6 +122,7 @@ class SearchAdapter internal constructor(context: Context, private val elements:
         init {
             imageView = view.findViewById<View>(R.id.list_icon) as ImageView
             checkBox = view.findViewById<View>(R.id.checkBox_search) as CheckBox
+
         }
     }
 }

@@ -6,6 +6,7 @@ import android.content.Intent
 import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import android.support.design.widget.NavigationView
+import android.support.v4.content.ContextCompat.startActivity
 import android.support.v4.view.GravityCompat
 import android.support.v4.view.MenuItemCompat.getActionView
 import android.support.v7.app.ActionBarDrawerToggle
@@ -28,6 +29,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.processors.PublishProcessor
 import io.reactivex.schedulers.Schedulers
+import msc.fooxer.studplaces.MainActivity.Storage.ELEMENTS
 import java.util.concurrent.TimeUnit
 import kotlin.collections.ArrayList
 
@@ -159,6 +161,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     @SuppressLint("CheckResult")
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
+        lateinit var mainSearchAsync : MainSearch_AsyncTask
         menuInflater.inflate(R.menu.main, menu)
         val searchItem = menu.findItem(R.id.app_bar_search)
         val searchLine = getActionView(searchItem) as SearchView
@@ -190,15 +193,17 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 Log.d("SEARCH LINE", "RECYCLER IS ACTIVE?: ${!isSearchActive}")
                 var showEmptyFlag = false
                 if (ELEMENTS.isNotEmpty()) {
-                    for (i in 0 until ELEMENTS.size) {
-                        if (text in ELEMENTS[i].name.toLowerCase()) {
-                            RANDOM_WEEK.add(ELEMENTS[i])
-                            adapter.setData(RANDOM_WEEK)
+                    //for (i in 0 until ELEMENTS.size) {
+                      //  if (text in ELEMENTS[i].name.toLowerCase()) {
+                            //RANDOM_WEEK.add(ELEMENTS[i])
+                            mainSearchAsync = MainSearch_AsyncTask(this, text)
+                            mainSearchAsync.execute()
+                            //adapter.setData(RANDOM_WEEK)
                             showEmptyFlag = true
-                        }
-                    }
+                     //   }
+                   // }
                     if (!showEmptyFlag) adapter.setData(RANDOM_WEEK)
-                    else if (text.isNullOrBlank()) {
+                    if (text.isNullOrBlank()) {
                         adapter.setData(ELEMENTS)
                         isSearchActive = false
                         Log.d("SEARCH LINE", "RECYCLER IS ACTIVE?: ${!isSearchActive}")

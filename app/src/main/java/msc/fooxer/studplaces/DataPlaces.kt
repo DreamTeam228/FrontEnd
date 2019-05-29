@@ -85,15 +85,16 @@ class DataPlaces {
                 if (stations!=null) {
                   for (j in 0 until stations.length()) {
                       val station = stations.getJSONObject(j)
+                      val sId = station.getDouble("id")
                       val sName = station.getString("name")
                       val lat = station.getDouble("lat")
                       val lng = station.getDouble("lng")
                       val order = station.getInt("order")
-                      val st = Station (sName,lat,lng,order)
+                      val st = Station (sId,sName,lat,lng,order)
                       lineStations.add(st)
                   }
                                }
-              val line = Line(name,color,lineStations)
+              val line = Line(id,name,color,lineStations)
               METRO_NEW.add(line)
               count++
 
