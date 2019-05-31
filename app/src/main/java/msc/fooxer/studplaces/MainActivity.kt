@@ -324,12 +324,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     // Получение очередных данных с сервака
     private fun dataFromNetwork(page: Int): Single<ArrayList<Place>> {
         return Single.just(true)
-            .delay(1, TimeUnit.SECONDS)
+            .delay(375, TimeUnit.MILLISECONDS)
             .map { value ->
                 if (ELEMENTS.isNotEmpty()) {
                     //val items = java.util.ArrayList<Place>()
                     ELEMENTS.add(ELEMENTS[0])
                     ELEMENTS.removeAt(0)
+                    /*ELEMENTS.addAll(ELEMENTS.subList(0, 5))
+                    ELEMENTS.removeAll(ELEMENTS.subList(0, 5))*/
                     // У нас здесь будет подгрузка с сервака
                     // Типо ELEMENTS.add(getDataFromDB())
 
