@@ -1,13 +1,11 @@
 package msc.fooxer.studplaces
 
-import android.content.ContentValues
 import android.content.Context
-import android.content.Intent
 import android.net.ConnectivityManager
 import android.os.AsyncTask
-import android.support.v4.content.ContextCompat.startActivity
 import android.util.Log
 import android.widget.Toast
+import okhttp3.*
 import org.apache.http.NameValuePair
 import org.apache.http.client.ClientProtocolException
 import org.apache.http.client.entity.UrlEncodedFormEntity
@@ -15,15 +13,9 @@ import org.apache.http.client.methods.HttpPost
 import org.apache.http.impl.client.BasicResponseHandler
 import org.apache.http.impl.client.DefaultHttpClient
 import org.apache.http.message.BasicNameValuePair
-import java.io.BufferedReader
-import java.io.IOException
-import java.io.InputStreamReader
-import java.io.UnsupportedEncodingException
-import java.net.HttpURLConnection
-import java.net.MalformedURLException
-import java.net.URL
-import android.os.AsyncTask.execute
 import org.apache.http.protocol.HTTP
+import java.io.IOException
+import java.net.URL
 
 
 class MainSearch_AsyncTask(private val context : Context, private val text : String)  : AsyncTask <Void, Void, String>() {
@@ -33,13 +25,49 @@ class MainSearch_AsyncTask(private val context : Context, private val text : Str
     }
 
     override fun doInBackground(vararg params: Void?): String {
+
+
+
         lateinit var url: URL
         var response = StringBuilder() // стринг не пересоздается, а изменяется
 
-        val httpClient = DefaultHttpClient()
+        // Отселе новый код с использованием OkHttp3 простирается
+        //-------------------------------------------------------
+        val client = OkHttpClient()
+
+        lateinit var responsse: Response
+            val formBody: RequestBody = FormBody.Builder()
+                .add("search", text)
+                .build()
+
+            val request: Request  = Request.Builder()
+                .url("http://www.trportal.ru/nekit/get_place_sql.php")
+                .post(formBody)
+                .build()
+
+
+
+            try {
+                val call: Call  = client.newCall(request);
+                responsse = call.execute()
+
+                // Do something with the response.
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
+
+        return responsse.body()!!.string()
+        //--------------------------------------------------
+        // Покуда здесь не заканчивается
+
+
+
+
+    /* Отселе начинается код ныне почивший в летах и не работающий на гаджетах новомодных
+        //val httpClient = DefaultHttpClient()
         // Creating HTTP Post
         val httpPost = HttpPost(
-            "http://trportal.ru/nekit/search.php"
+            "http://www.trportal.ru/nekit/search.php"
         )
 
 
@@ -58,7 +86,7 @@ class MainSearch_AsyncTask(private val context : Context, private val text : Str
         lateinit var s : String
         try {
             val responSse = httpclient.execute(http, BasicResponseHandler()) as String
-            httpPost
+
 //            val response = httpClient.execute(httpPost, BasicResponseHandler())
 
             // writing response to log
@@ -72,7 +100,11 @@ class MainSearch_AsyncTask(private val context : Context, private val text : Str
             e.printStackTrace()
         }
         return s
+        // И доколе сей код продолжается
+    */
     }
+
+
 
 
     override fun onPostExecute(result: String) {

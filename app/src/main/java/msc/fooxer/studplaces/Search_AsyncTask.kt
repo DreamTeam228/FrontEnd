@@ -23,6 +23,7 @@ import java.net.HttpURLConnection
 import java.net.MalformedURLException
 import java.net.URL
 import android.os.AsyncTask.execute
+import okhttp3.*
 import org.apache.http.protocol.HTTP
 import org.json.JSONArray
 import org.json.JSONObject
@@ -44,7 +45,7 @@ class Search_AsyncTask(private val context : Context)  : AsyncTask <Void, Void, 
         lateinit var url: URL
         var response = StringBuilder() // стринг не пересоздается, а изменяется
 
-        val httpClient = DefaultHttpClient()
+        //val httpClient = DefaultHttpClient()
         // Creating HTTP Post
         val httpPost = HttpPost(
             "http://trportal.ru/nekit/search.php"
@@ -65,6 +66,50 @@ class Search_AsyncTask(private val context : Context)  : AsyncTask <Void, Void, 
         }*/
 
 
+        // Тут начинается новый код с OkHttp3, в перспективе с переездом на Ретрофит
+        //--------------------------------------------------------------------------
+        val client = OkHttpClient()
+
+        val jsonMetro  = JSONArray()
+        for (i in 0 until checkedMetro.size) {
+            jsonMetro.put(checkedMetro[i])
+        }
+
+        val jsonCategory = JSONArray()
+        for (i in 0 until checkedCategory.size) {
+            jsonCategory.put(checkedCategory[i])
+        }
+
+        lateinit var responsse: Response
+        val formBody: RequestBody = FormBody.Builder()
+            .add("metro", jsonMetro.toString())
+            .add("category", jsonCategory.toString())
+            .add("price", "$maxPrice")
+            .build()
+
+        val request: Request = Request.Builder()
+            .url("http://www.trportal.ru/nekit/search.php")
+            .post(formBody)
+            .build()
+
+
+
+        try {
+            val call: Call = client.newCall(request);
+            responsse = call.execute()
+
+            // Do something with the response.
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+
+        return responsse.body()!!.string()
+        //-------------------------------------------------------
+        // Конец нового кода
+
+
+
+        /* Здесь был старый код с использованием DefaultHttpClient
         val httpclient = DefaultHttpClient()
         val http = HttpPost("http://www.trportal.ru/nekit/search.php")
         val nameValuePairs = ArrayList<NameValuePair>(2)
@@ -92,7 +137,6 @@ class Search_AsyncTask(private val context : Context)  : AsyncTask <Void, Void, 
         // Making HTTP Request
         try {
             val responSse = httpclient.execute(http, BasicResponseHandler()) as String
-            httpPost
 //            val response = httpClient.execute(httpPost, BasicResponseHandler())
 
             // writing response to log
@@ -107,7 +151,11 @@ class Search_AsyncTask(private val context : Context)  : AsyncTask <Void, Void, 
 
         }
         return s
-        }
+        // Конец старого кода
+         */
+    }
+
+
 
 
     override fun onPostExecute(result: String) {
